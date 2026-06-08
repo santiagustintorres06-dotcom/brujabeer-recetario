@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<!--
+  BrujaBeer RecipeForm.fxml — UI mejorada inspirada en BrewerFriends
+
+  PERSONALIZACIÓN:
+  - Colores: Editar en el archivo src/main/resources/styles/main.css
+  - Layout: Editar este FXML directamente
+  - Espaciados: Aumentar/disminuir valores de <padding> e <Insets>
+
+  CONTROLADOR: com.brujabeer.recetario.ui.controller.RecipeFormController
+-->
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.brujabeer.recetario.ui.controller.RecipeFormController"
+            style="-fx-font-family: 'Segoe UI', Arial, sans-serif;">
+    <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+
+    <!-- CABECERA: Menú + Toolbar -->
+    <top>
+        <VBox spacing="0" style="-fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
+            <MenuBar style="-fx-font-size: 11;">
+                <menus>
+                    <Menu text="📋 Receta">
+                        <items>
+                            <MenuItem text="➕ Nueva" onAction="#limpiarFormulario" />
+                            <MenuItem text="💾 Guardar" onAction="#guardarReceta" />
+                            <SeparatorMenuItem />
+                            <MenuItem text="❌ Salir" onAction="#cancelar" />
+                        </items>
+                    </Menu>
+                    <Menu text="❓ Ayuda">
+                        <items>
+                            <MenuItem text="ℹ Acerca de BrujaBeer" onAction="#mostrarAcercaDe" />
+                        </items>
+                    </Menu>
+                </menus>
+            </MenuBar>
+            <ToolBar style="-fx-padding: 8; -fx-background-color: #f8f9fa;">
+                <Label text="🍺 BrujaBeer Recetario"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                <Separator orientation="VERTICAL" />
+                <Label text="v1.0 | Editor de Recetas Cerveceras"
+                       style="-fx-font-size: 11px; -fx-text-fill: #666;" />
+            </ToolBar>
+        </VBox>
+    </top>
+
+    <!-- LADO IZQUIERDO: Lista de recetas guardadas -->
+    <left>
+        <VBox spacing="8" prefWidth="280" style="-fx-border-color: #e0e0e0; -fx-border-width: 0 1 0 0; -fx-padding: 12;">
+            <Label text="📚 Recetas Guardadas"
+                   style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #333;" />
+            <ListView fx:id="lstRecetas" prefHeight="400"
+                      style="-fx-control-inner-background: #fafafa; -fx-padding: 4;" />
+        </VBox>
+    </left>
+
+    <!-- CENTRO: Formulario principal (encabezado + pestañas + cálculos) -->
+    <center>
+        <VBox spacing="12" style="-fx-padding: 0;">
+
+            <!-- SECCIÓN 1: Datos generales de la receta -->
+            <VBox spacing="8" style="-fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-padding: 12; -fx-background-color: #fafafa;">
+                <Label text="📝 Información de la Receta"
+                       style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #333;" />
+
+                <GridPane hgap="12" vgap="8">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="15" />
+                        <ColumnConstraints percentWidth="50" />
+                        <ColumnConstraints percentWidth="15" />
+                        <ColumnConstraints percentWidth="20" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints minHeight="60" />
+                    </rowConstraints>
+
+                    <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-weight: bold;" />
+                    <TextField fx:id="txtNombre" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                               promptText="Ej: IPA Argentina" style="-fx-padding: 6; -fx-font-size: 11;" />
+
+                    <Label text="Estilo:" GridPane.rowIndex="0" GridPane.columnIndex="2" style="-fx-font-weight: bold;" />
+                    <ComboBox fx:id="cbEstilo" GridPane.rowIndex="0" GridPane.columnIndex="3"
+                              prefWidth="140" style="-fx-padding: 4; -fx-font-size: 11;" />
+
+                    <Label text="Volumen (L):" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-weight: bold;" />
+                    <TextField fx:id="txtVolumenLitros" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                               promptText="20" style="-fx-padding: 6; -fx-font-size: 11;" />
+
+                    <Label text="Descripción:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-weight: bold; -fx-alignment: TOP_LEFT;" />
+                    <TextArea fx:id="txaDescripcion" prefRowCount="3" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                              GridPane.columnSpan="3" wrapText="true" style="-fx-padding: 6; -fx-font-size: 11;" />
+                </GridPane>
+            </VBox>
+
+            <!-- SECCIÓN 2: Maltas, Lúpulos y Levaduras (Pestañas) -->
+            <TabPane style="-fx-font-size: 11px;">
+                <tabs>
+
+                    <!-- TAB 1: MALTAS -->
+                    <Tab text="🌾 Maltas" closable="false">
+                        <VBox spacing="10" style="-fx-padding: 12;">
+                            <Label text="Agregar Malta:" style="-fx-font-weight: bold; -fx-font-size: 11px;" />
+                            <HBox spacing="8">
+                                <ComboBox fx:id="cbMaltaSeleccionada" prefWidth="250"
+                                         promptText="Seleccionar malta..." style="-fx-padding: 4;" />
+                                <TextField fx:id="txtCantidadMalta" prefWidth="80"
+                                          promptText="g" style="-fx-padding: 4; -fx-alignment: CENTER;" />
+                                <Button fx:id="btnAgregarMalta" text="➕ Agregar" onAction="#agregarMalta"
+                                       style="-fx-padding: 6 16 6 16; -fx-font-weight: bold;" />
+                                <Button fx:id="btnEliminarMalta" text="🗑 Eliminar" onAction="#eliminarMalta"
+                                       style="-fx-padding: 6 16 6 16;" />
+                            </HBox>
+                            <TableView fx:id="tblMaltas" prefHeight="180">
+                                <columns>
+                                    <TableColumn fx:id="colMaltaNombre" text="Malta" prefWidth="240" />
+                                    <TableColumn fx:id="colMaltaCantidad" text="Cantidad (g)" prefWidth="100" />
+                                    <TableColumn fx:id="colMaltaPorcentaje" text="Grist (%)" prefWidth="80" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </Tab>
+
+                    <!-- TAB 2: LÚPULOS -->
+                    <Tab text="🌿 Lúpulos" closable="false">
+                        <VBox spacing="10" style="-fx-padding: 12;">
+                            <Label text="Agregar Lúpulo:" style="-fx-font-weight: bold; -fx-font-size: 11px;" />
+                            <HBox spacing="6">
+                                <ComboBox fx:id="cbLupuloSeleccionado" prefWidth="200"
+                                         promptText="Seleccionar lúpulo..." style="-fx-padding: 4;" />
+                                <TextField fx:id="txtCantidadLupulo" prefWidth="70"
+                                          promptText="g" style="-fx-padding: 4; -fx-alignment: CENTER;" />
+                                <TextField fx:id="txtTiempoLupulo" prefWidth="70"
+                                          promptText="min" style="-fx-padding: 4; -fx-alignment: CENTER;" />
+                                <ComboBox fx:id="cbUsoLupulo" prefWidth="100" style="-fx-padding: 4;" />
+                                <Button fx:id="btnAgregarLupulo" text="➕ Agregar" onAction="#agregarLupulo"
+                                       style="-fx-padding: 6 16 6 16; -fx-font-weight: bold;" />
+                                <Button fx:id="btnEliminarLupulo" text="🗑 Eliminar" onAction="#eliminarLupulo"
+                                       style="-fx-padding: 6 16 6 16;" />
+                            </HBox>
+                            <TableView fx:id="tblLupulos" prefHeight="180">
+                                <columns>
+                                    <TableColumn fx:id="colLupuloNombre" text="Lúpulo" prefWidth="200" />
+                                    <TableColumn fx:id="colLupuloCantidad" text="Cantidad (g)" prefWidth="80" />
+                                    <TableColumn fx:id="colLupuloTiempo" text="Tiempo (min)" prefWidth="80" />
+                                    <TableColumn fx:id="colLupuloUso" text="Uso" prefWidth="100" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </Tab>
+
+                    <!-- TAB 3: LEVADURAS -->
+                    <Tab text="🧬 Levaduras" closable="false">
+                        <VBox spacing="10" style="-fx-padding: 12;">
+                            <Label text="Agregar Levadura:" style="-fx-font-weight: bold; -fx-font-size: 11px;" />
+                            <HBox spacing="8">
+                                <ComboBox fx:id="cbLevaduraSeleccionada" prefWidth="250"
+                                         promptText="Seleccionar levadura..." style="-fx-padding: 4;" />
+                                <TextField fx:id="txtCantidadLevadura" prefWidth="80"
+                                          promptText="g" style="-fx-padding: 4; -fx-alignment: CENTER;" />
+                                <Button fx:id="btnAgregarLevadura" text="➕ Agregar" onAction="#agregarLevadura"
+                                       style="-fx-padding: 6 16 6 16; -fx-font-weight: bold;" />
+                                <Button fx:id="btnEliminarLevadura" text="🗑 Eliminar" onAction="#eliminarLevadura"
+                                       style="-fx-padding: 6 16 6 16;" />
+                            </HBox>
+                            <TableView fx:id="tblLevaduras" prefHeight="180">
+                                <columns>
+                                    <TableColumn fx:id="colLevaduraNombre" text="Levadura" prefWidth="280" />
+                                    <TableColumn fx:id="colLevaduraCantidad" text="Cantidad (g)" prefWidth="120" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </Tab>
+
+                </tabs>
+            </TabPane>
+
+            <!-- SECCIÓN 3: Parámetros calculados (OG, IBU, ABV, Color) -->
+            <HBox spacing="20" alignment="CENTER_LEFT"
+                  style="-fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-padding: 12; -fx-background-color: #fafafa;">
+                <Label text="📊 Parámetros Calculados:" style="-fx-font-weight: bold;" />
+                <Separator />
+
+                <VBox spacing="2" alignment="CENTER">
+                    <Label text="OG" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
+                    <Label fx:id="lblOgEstimada" text="—" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                </VBox>
+
+                <VBox spacing="2" alignment="CENTER">
+                    <Label text="FG" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
+                    <Label fx:id="lblFgEstimada" text="—" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                </VBox>
+
+                <VBox spacing="2" alignment="CENTER">
+                    <Label text="IBU" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
+                    <Label fx:id="lblIbuEstimado" text="—" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                </VBox>
+
+                <VBox spacing="2" alignment="CENTER">
+                    <Label text="ABV (%)" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
+                    <Label fx:id="lblAbvEstimado" text="—" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                </VBox>
+
+                <VBox spacing="2" alignment="CENTER">
+                    <Label text="Color" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
+                    <Label fx:id="lblColorEbc" text="—" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                </VBox>
+
+                <Separator />
+                <Button text="🔄 Recalcular" onAction="#recalcularTodo"
+                       style="-fx-padding: 8 16 8 16; -fx-font-weight: bold;" />
+            </HBox>
+
+        </VBox>
+    </center>
+
+    <!-- PIE: Botones de acción principales -->
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_RIGHT"
+              style="-fx-border-color: #e0e0e0; -fx-border-width: 1 0 0 0; -fx-padding: 12; -fx-background-color: #f8f9fa;">
+            <Button text="🔄 Limpiar" onAction="#limpiarFormulario"
+                   style="-fx-padding: 8 16 8 16; -fx-font-size: 11px;" />
+            <Button text="💾 Guardar Receta" onAction="#guardarReceta"
+                   style="-fx-padding: 8 16 8 16; -fx-font-size: 11px; -fx-font-weight: bold; -fx-base: #c97e27; -fx-text-fill: white;" />
+        </HBox>
+    </bottom>
+
+</BorderPane>
