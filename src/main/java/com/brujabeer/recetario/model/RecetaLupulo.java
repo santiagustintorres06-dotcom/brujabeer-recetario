@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.EqualsAndHashCode;
 
 /**
  * TABLA INTERMEDIA: receta_lupulos
@@ -17,8 +18,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class RecetaLupulo {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -52,11 +55,15 @@ public class RecetaLupulo {
 
     // ────────────────────────────────────────────────────────────────────────
 
+    /**
+     * Tipo de adición del lúpulo según el momento del proceso.
+     * Determina tanto el rol organoléptico como el cálculo de IBU.
+     */
     public enum UsoLupulo {
-        BITTERING,   // Amargante: 30-90 min antes del fin del hervor
-        FLAVOR,      // Sabor: 15-30 min
-        AROMA,       // Aroma: 0-15 min
-        WHIRLPOOL,   // Adición al flameout, aprovecha el calor residual
-        DRY_HOP      // En frío, durante/después de la fermentación. tiempoMinutos = null
+        HERVOR,       // En el hervor. Tiempo > 0. Aporta amargor (isomerización de α-ácidos).
+        WHIRLPOOL,    // Post-hervor / flameout. Aprovecha el calor residual (≥ 70°C).
+                      // Aporta aroma y sabor con mínima isomerización.
+        DRY_HOPPING   // En frío, durante o después de fermentación. tiempoMinutos = null.
+                      // Solo aroma y sabor. No aporta IBU.
     }
 }

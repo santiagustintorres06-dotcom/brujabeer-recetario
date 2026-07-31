@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.EqualsAndHashCode;
 
 /**
  * TABLA INTERMEDIA: receta_levaduras
@@ -16,8 +17,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class RecetaLevadura {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,7 +37,19 @@ public class RecetaLevadura {
     @Column(name = "cantidad_gramos")
     private Double cantidadGramos;
 
-    /** Cantidad de sobres/paquetes (formato más común en homebrewing). */
-    @Column(name = "cantidad_paquetes")
-    private Integer cantidadPaquetes;
+    /** Formato de la levadura: SECA (sobres) o LIQUIDA (viales/smack packs). */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "formato", length = 10)
+    private FormatoLevadura formato;
+
+    // ────────────────────────────────────────────────────────────────────────
+
+    /**
+     * Formato de presentación de la levadura.
+     * Determina las unidades de dosificación y el manejo pre-inoculación.
+     */
+    public enum FormatoLevadura {
+        SECA,     // Levadura seca en sobres. Ej: Fermentis US-05 (11.5g), SafAle S-04
+        LIQUIDA   // Levadura líquida en viales o smack packs. Ej: Wyeast 1056, White Labs WLP001
+    }
 }

@@ -104,12 +104,45 @@ public class RecipeFormController implements Initializable {
     @FXML private TableColumn<RecetaLevadura, Double> colLevaduraCantidad;
 
     // ────────────────────────────────────────────────────────────────────────
+    // SECCIÓN: Equipo, Agua y Formato Levadura (NUEVO)
+    // ────────────────────────────────────────────────────────────────────────
+
+    @FXML private ComboBox<Equipo> cbEquipo;
+    @FXML private ComboBox<AguaPerfil> cbAguaPerfil;
+    @FXML private ComboBox<RecetaLevadura.FormatoLevadura> cbFormatoLevadura;
+    @FXML private TableColumn<RecetaLevadura, String> colLevaduraFormato;
+
+    // ────────────────────────────────────────────────────────────────────────
+    // SECCIÓN: Pestaña OTROS INGREDIENTES (Misceláneos)
+    // ────────────────────────────────────────────────────────────────────────
+
+    @FXML private TextField txtNombreMiscelaneo;
+    @FXML private TextField txtCantidadMiscelaneo;
+    @FXML private TextField txtUsoMiscelaneo;
+    @FXML private TextField txtTiempoMiscelaneo;
+    @FXML private Button btnAgregarMiscelaneo;
+    @FXML private Button btnEliminarMiscelaneo;
+    @FXML private TableView<RecetaMiscelaneo> tblMiscelaneos;
+    @FXML private TableColumn<RecetaMiscelaneo, String> colMiscelaneoNombre;
+    @FXML private TableColumn<RecetaMiscelaneo, Double> colMiscelaneoCantidad;
+    @FXML private TableColumn<RecetaMiscelaneo, String> colMiscelaneoUso;
+    @FXML private TableColumn<RecetaMiscelaneo, Integer> colMiscelaneoTiempo;
+
+    // ── Sub-controllers (inyectados por fx:include) ─────────────────────
+    @FXML private javafx.scene.Node maceradoTab;
+    @FXML private MaceradoTabController maceradoTabController;
+    @FXML private javafx.scene.Node fermentacionPane;
+    @FXML private FermentacionPaneController fermentacionPaneController;
+    @FXML private Button btnGuardarReceta;
+
+    // ────────────────────────────────────────────────────────────────────────
     // Modelos de datos observables para los TableView
     // ────────────────────────────────────────────────────────────────────────
 
     private final ObservableList<RecetaMalta> maltasObs = FXCollections.observableArrayList();
     private final ObservableList<RecetaLupulo> lupulosObs = FXCollections.observableArrayList();
     private final ObservableList<RecetaLevadura> levaduraObs = FXCollections.observableArrayList();
+    private final ObservableList<RecetaMiscelaneo> miscelaneosObs = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -128,7 +161,62 @@ public class RecipeFormController implements Initializable {
             }
         });
 
-        log.info("✅ RecipeFormController inicializado.");
+        // Menú contextual para lista de recetas (Modificar/Borrar)
+        javafx.scene.control.ContextMenu contextMenu = new javafx.scene.control.ContextMenu();
+        javafx.scene.control.MenuItem menuModificar = new javafx.scene.control.MenuItem("Modificar");
+        menuModificar.setOnAction(e -> {
+            Receta seleccionada = lstRecetas.getSelectionModel().getSelectedItem();
+            if (seleccionada != null) {
+                cargarRecetaEnFormulario(seleccionada);
+            }
+        });
+        javafx.scene.control.MenuItem menuBorrar = new javafx.scene.control.MenuItem("Borrar");
+        menuBorrar.setOnAction(e -> {
+            Receta seleccionada = lstRecetas.getSelectionModel().getSelectedItem();
+            if (seleccionada != null) {
+                Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+                confirm.setTitle("Confirmar Borrado");
+                confirm.setHeaderText("¿Borrar receta?");
+                confirm.setContentText("Vas a borrar la receta: " + seleccionada.getNombre());
+                if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                    recetaService.eliminar(seleccionada.getId());
+                    lstRecetas.getItems().remove(seleccionada);
+                    limpiarFormulario(null);
+                }
+            }
+        });
+        contextMenu.getItems().addAll(menuModificar, menuBorrar);
+        lstRecetas.setContextMenu(contextMenu);
+
+        // ── REACTIVIDAD TOTAL: Listeners que recalculan automáticamente ──────
+
+        // Volumen cambia → recalcula todo (OG, IBU, Color, ABV)
+        txtVolumenLitros.textProperty().addListener((obs, oldVal, newVal) -> recalcularTodo());
+        txtNombre.textProperty().addListener((obs, oldVal, newVal) -> actualizarEstadoBotonGuardar());
+        cbEstilo.valueProperty().addListener((obs, oldVal, newVal) -> actualizarEstadoBotonGuardar());
+
+        // Equipo cambia → recalcula OG (depende de eficiencia)
+        if (cbEquipo != null) {
+            cbEquipo.valueProperty().addListener((obs, oldVal, newVal) -> recalcularTodo());
+        }
+
+        // ObservableLists cambian → recalculan sus métricas
+        maltasObs.addListener((javafx.collections.ListChangeListener<RecetaMalta>) change -> recalcularTodo());
+        lupulosObs.addListener((javafx.collections.ListChangeListener<RecetaLupulo>) change -> recalcularTodo());
+        levaduraObs.addListener((javafx.collections.ListChangeListener<RecetaLevadura>) change -> recalcularTodo());
+
+        // Reactividad Dry Hopping
+        if (cbUsoLupulo != null && txtTiempoLupulo != null) {
+            cbUsoLupulo.valueProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal == RecetaLupulo.UsoLupulo.DRY_HOPPING) {
+                    txtTiempoLupulo.setPromptText("días");
+                } else {
+                    txtTiempoLupulo.setPromptText("min");
+                }
+            });
+        }
+
+        log.info("✅ RecipeFormController inicializado con reactividad total.");
     }
 
     // ────────────────────────────────────────────────────────────────────────
@@ -153,10 +241,26 @@ public class RecipeFormController implements Initializable {
         colLupuloUso.setCellValueFactory(new PropertyValueFactory<>("uso"));
 
         // --- TableView de Levaduras ---
-        tblLevaduras.setItems(levaduraObs);
-        colLevaduraNombre.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(
-                data.getValue().getLevadura() != null ? data.getValue().getLevadura().getNombre() : ""));
-        colLevaduraCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidadGramos"));
+        if (tblLevaduras != null) {
+            tblLevaduras.setItems(levaduraObs);
+            colLevaduraNombre.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(
+                    data.getValue().getLevadura() != null ? data.getValue().getLevadura().getNombre() : ""));
+            colLevaduraCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidadGramos"));
+            if (colLevaduraFormato != null) {
+                colLevaduraFormato.setCellValueFactory(data ->
+                        new javafx.beans.property.SimpleStringProperty(
+                                data.getValue().getFormato() != null ? data.getValue().getFormato().name() : "SECA"));
+            }
+        }
+
+        // --- TableView de Misceláneos ---
+        if (tblMiscelaneos != null) {
+            tblMiscelaneos.setItems(miscelaneosObs);
+            colMiscelaneoNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+            colMiscelaneoCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+            colMiscelaneoUso.setCellValueFactory(new PropertyValueFactory<>("uso"));
+            colMiscelaneoTiempo.setCellValueFactory(new PropertyValueFactory<>("tiempo"));
+        }
     }
 
     /**
@@ -214,6 +318,39 @@ public class RecipeFormController implements Initializable {
             // --- ComboBox Uso Lúpulo ---
             cbUsoLupulo.setItems(FXCollections.observableArrayList(RecetaLupulo.UsoLupulo.values()));
 
+            // --- ComboBox Formato Levadura (NUEVO) ---
+            if (cbFormatoLevadura != null) {
+                cbFormatoLevadura.setItems(FXCollections.observableArrayList(RecetaLevadura.FormatoLevadura.values()));
+                cbFormatoLevadura.getSelectionModel().selectFirst();
+            }
+
+            // --- ComboBox Equipo (NUEVO) ---
+            if (recetaService != null && cbEquipo != null) {
+                try {
+                    var equipos = recetaService.listarEquipos();
+                    if (equipos != null && !equipos.isEmpty()) {
+                        cbEquipo.setItems(FXCollections.observableArrayList(equipos));
+                        cbEquipo.getSelectionModel().selectFirst();
+                        log.info("✅ {} Equipos cargados.", equipos.size());
+                    }
+                } catch (Exception ex) {
+                    log.warn("⚠️ Error cargando equipos: {}", ex.getMessage());
+                }
+            }
+
+            // --- ComboBox Perfil de Agua (NUEVO) ---
+            if (recetaService != null && cbAguaPerfil != null) {
+                try {
+                    var perfiles = recetaService.listarPerfilesAgua();
+                    if (perfiles != null && !perfiles.isEmpty()) {
+                        cbAguaPerfil.setItems(FXCollections.observableArrayList(perfiles));
+                        log.info("✅ {} Perfiles de Agua cargados.", perfiles.size());
+                    }
+                } catch (Exception ex) {
+                    log.warn("⚠️ Error cargando perfiles de agua: {}", ex.getMessage());
+                }
+            }
+
             // --- ListView Recetas ---
             if (recetaRepository != null) {
                 var recetas = recetaRepository.findAll();
@@ -267,11 +404,19 @@ public class RecipeFormController implements Initializable {
     /**
      * Carga los datos de una receta existente en el formulario.
      */
-    private void cargarRecetaEnFormulario(Receta receta) {
-        if (receta == null) return;
+    private void cargarRecetaEnFormulario(Receta recetaSimple) {
+        if (recetaSimple == null) return;
+
+        Receta receta = recetaSimple;
+        if (recetaSimple.getId() != null && recetaService != null) {
+            receta = recetaService.buscarConIngredientes(recetaSimple.getId()).orElse(recetaSimple);
+        }
 
         txtNombre.setText(receta.getNombre());
         cbEstilo.getSelectionModel().select(receta.getEstilo());
+        if (cbEstilo.getEditor() != null) {
+            cbEstilo.getEditor().setText(receta.getEstilo() != null ? receta.getEstilo() : "");
+        }
         txaDescripcion.setText(receta.getDescripcion() != null ? receta.getDescripcion() : "");
         if (receta.getVolumenLitros() != null) {
             txtVolumenLitros.setText(receta.getVolumenLitros().toString());
@@ -291,6 +436,35 @@ public class RecipeFormController implements Initializable {
         levaduraObs.clear();
         if (receta.getLevaduras() != null) {
             levaduraObs.addAll(receta.getLevaduras());
+        }
+
+        // Cargar Equipo y Agua (NUEVO)
+        if (cbEquipo != null && receta.getEquipo() != null) {
+            cbEquipo.getSelectionModel().select(receta.getEquipo());
+        }
+        if (cbAguaPerfil != null && receta.getAguaPerfil() != null) {
+            cbAguaPerfil.getSelectionModel().select(receta.getAguaPerfil());
+        }
+
+        // Cargar Misceláneos
+        miscelaneosObs.clear();
+        if (receta.getMiscelaneos() != null) {
+            miscelaneosObs.addAll(receta.getMiscelaneos());
+        }
+
+        // Cargar Macerado (delegado al sub-controller)
+        if (maceradoTabController != null && receta.getPasosMacerado() != null) {
+            maceradoTabController.cargarPasos(receta.getPasosMacerado());
+        }
+
+        // Cargar Fermentación y Maduración (delegado al sub-controller)
+        if (fermentacionPaneController != null) {
+            fermentacionPaneController.cargarDatos(
+                    receta.getDiasFermentacion(),
+                    receta.getTempFermentacion(),
+                    receta.getVolumenesCO2(),
+                    receta.getDiasMaduracion(),
+                    receta.getTempMaduracion());
         }
 
         recalcularTodo();
@@ -461,7 +635,7 @@ public class RecipeFormController implements Initializable {
             if (cbUsoLupulo.getValue() == null) {
                 mostrarAlerta(Alert.AlertType.WARNING, "⚠️ Uso No Especificado", 
                     "Estableciendo uso predeterminado a 'Bittering'");
-                cbUsoLupulo.setValue(RecetaLupulo.UsoLupulo.BITTERING);
+                cbUsoLupulo.setValue(RecetaLupulo.UsoLupulo.HERVOR);
             }
 
             // Si pasa todas las validaciones: agregar
@@ -470,7 +644,7 @@ public class RecipeFormController implements Initializable {
             rl.setLupulo(lup);
             rl.setCantidadGramos(cantidad);
             rl.setTiempoMinutos(tiempo);
-            rl.setUso(cbUsoLupulo.getValue() != null ? cbUsoLupulo.getValue() : RecetaLupulo.UsoLupulo.BITTERING);
+            rl.setUso(cbUsoLupulo.getValue() != null ? cbUsoLupulo.getValue() : RecetaLupulo.UsoLupulo.HERVOR);
             lupulosObs.add(rl);
             
             log.info("✅ Lúpulo agregado: {} - {} g - {} min - {}", 
@@ -552,6 +726,9 @@ public class RecipeFormController implements Initializable {
             Levadura lev = cbLevaduraSeleccionada.getValue();
             RecetaLevadura rl = new RecetaLevadura();
             rl.setLevadura(lev);
+            rl.setFormato(cbFormatoLevadura != null && cbFormatoLevadura.getValue() != null
+                    ? cbFormatoLevadura.getValue()
+                    : RecetaLevadura.FormatoLevadura.SECA);
             if (cantidad != null) {
                 rl.setCantidadGramos(cantidad);
             }
@@ -595,79 +772,137 @@ public class RecipeFormController implements Initializable {
     }
 
     @FXML
+    public void agregarMiscelaneo(ActionEvent event) {
+        try {
+            if (txtNombreMiscelaneo.getText() == null || txtNombreMiscelaneo.getText().isBlank()) {
+                mostrarAlerta(Alert.AlertType.ERROR, "⚠️ Validación", "Completá el nombre del ingrediente.");
+                return;
+            }
+            if (txtCantidadMiscelaneo.getText() == null || txtCantidadMiscelaneo.getText().isBlank()) {
+                mostrarAlerta(Alert.AlertType.ERROR, "⚠️ Validación", "Completá la cantidad.");
+                return;
+            }
+            Double cantidad = Double.parseDouble(txtCantidadMiscelaneo.getText().trim());
+
+            RecetaMiscelaneo rm = new RecetaMiscelaneo();
+            rm.setNombre(txtNombreMiscelaneo.getText().trim());
+            rm.setCantidad(cantidad);
+            if (txtUsoMiscelaneo.getText() != null) rm.setUso(txtUsoMiscelaneo.getText().trim());
+            if (txtTiempoMiscelaneo.getText() != null && !txtTiempoMiscelaneo.getText().isBlank()) {
+                rm.setTiempo(Integer.parseInt(txtTiempoMiscelaneo.getText().trim()));
+            }
+
+            miscelaneosObs.add(rm);
+            txtNombreMiscelaneo.clear();
+            txtCantidadMiscelaneo.clear();
+            txtUsoMiscelaneo.clear();
+            txtTiempoMiscelaneo.clear();
+        } catch (NumberFormatException ex) {
+            mostrarAlerta(Alert.AlertType.ERROR, "❌ Error", "La cantidad o tiempo ingresado no es válido.");
+        }
+    }
+
+    @FXML
+    public void eliminarMiscelaneo(ActionEvent event) {
+        RecetaMiscelaneo seleccionado = tblMiscelaneos.getSelectionModel().getSelectedItem();
+        if (seleccionado != null) {
+            miscelaneosObs.remove(seleccionado);
+        }
+    }
+
+    @FXML
     public void calcularDensidad(ActionEvent event) {
         try {
-            double volumen = 20.0;
-            if (txtVolumenLitros.getText() != null && !txtVolumenLitros.getText().isBlank()) {
-                volumen = Double.parseDouble(txtVolumenLitros.getText());
+            double volumen = parseDoubleOrDefault(txtVolumenLitros.getText(), 20.0);
+            double eficiencia = 72.0;
+            if (cbEquipo != null && cbEquipo.getValue() != null && cbEquipo.getValue().getEficienciaBrewhouse() != null) {
+                eficiencia = cbEquipo.getValue().getEficienciaBrewhouse();
             }
-            double totalPoints = 0.0;
-            for (RecetaMalta rm : maltasObs) {
-                double kg = (rm.getCantidadGramos() != null ? rm.getCantidadGramos() : 0.0) / 1000.0;
-                double rendimiento = (rm.getMalta() != null && rm.getMalta().getRendimientoPorcentaje() != null) ? rm.getMalta().getRendimientoPorcentaje() : 75.0;
-                double ppg = 300.0;
-                double mcu = (kg * rendimiento/100.0 * ppg) / volumen;
-                totalPoints += mcu;
+
+            if (recetaService != null && !maltasObs.isEmpty()) {
+                double og = recetaService.calcularOG(new java.util.ArrayList<>(maltasObs), volumen, eficiencia);
+                lblOgEstimada.setText(String.format("%.3f", og));
+            } else if (!maltasObs.isEmpty()) {
+                double totalPoints = 0.0;
+                for (RecetaMalta rm : maltasObs) {
+                    double kg = (rm.getCantidadGramos() != null ? rm.getCantidadGramos() : 0.0) / 1000.0;
+                    double rendimiento = (rm.getMalta() != null && rm.getMalta().getRendimientoPorcentaje() != null)
+                            ? rm.getMalta().getRendimientoPorcentaje() : 75.0;
+                    totalPoints += kg * (rendimiento / 100.0) * 384.0 * (eficiencia / 100.0);
+                }
+                double og = 1.0 + (totalPoints / volumen / 1000.0);
+                lblOgEstimada.setText(String.format("%.3f", og));
+            } else {
+                lblOgEstimada.setText("—");
             }
-            double og = 1.0 + (totalPoints / 1000.0);
-            lblOgEstimada.setText(String.format("%.3f", og));
             calcularABV();
-        } catch (NumberFormatException ex) {
-            // ignore
+            actualizarSubControllers();
+        } catch (Exception ex) {
+            log.debug("Error calculando OG: {}", ex.getMessage());
         }
     }
 
     @FXML
     public void calcularIBU(ActionEvent event) {
-        double ibuTotal = 0.0;
-        double volumen = 20.0;
         try {
-            if (txtVolumenLitros.getText() != null && !txtVolumenLitros.getText().isBlank()) {
-                volumen = Double.parseDouble(txtVolumenLitros.getText());
+            double volumen = parseDoubleOrDefault(txtVolumenLitros.getText(), 20.0);
+            double og = parseDoubleOrDefault(lblOgEstimada.getText(), 1.050);
+
+            if (recetaService != null && !lupulosObs.isEmpty()) {
+                double ibu = recetaService.calcularIBUTinseth(new java.util.ArrayList<>(lupulosObs), volumen, og);
+                lblIbuEstimado.setText(String.format("%.0f", ibu));
+            } else {
+                lblIbuEstimado.setText("—");
             }
-            for (RecetaLupulo rl : lupulosObs) {
-                if (rl.getUso() == RecetaLupulo.UsoLupulo.DRY_HOP) continue;
-                double minutos = rl.getTiempoMinutos() != null ? rl.getTiempoMinutos() : 0;
-                double utilization = (1 - Math.exp(-0.04 * minutos)) / 4.15;
-                double alpha = rl.getLupulo() != null && rl.getLupulo().getPorcentajeAlpha() != null ? rl.getLupulo().getPorcentajeAlpha() : 5.0;
-                double contrib = (rl.getCantidadGramos() * alpha * utilization * 1000.0) / (volumen * 100.0);
-                ibuTotal += contrib;
-            }
-            lblIbuEstimado.setText(String.format("%.0f", ibuTotal));
-        } catch (NumberFormatException ex) {
-            // ignore
+        } catch (Exception ex) {
+            log.debug("Error calculando IBU: {}", ex.getMessage());
         }
     }
 
     private void calcularABV() {
         try {
-            double og = Double.parseDouble(lblOgEstimada.getText());
-            double fg = 1.010;
-            if (!lblFgEstimada.getText().equals("—")) {
-                fg = Double.parseDouble(lblFgEstimada.getText());
+            double og = parseDoubleOrDefault(lblOgEstimada.getText(), 0.0);
+            if (og <= 1.0) {
+                lblAbvEstimado.setText("—");
+                lblFgEstimada.setText("—");
+                return;
             }
-            double abv = (og - fg) * 131.25;
-            lblAbvEstimado.setText(String.format("%.1f%%", abv));
+
+            Integer atMin = 73;
+            Integer atMax = 77;
+            if (!levaduraObs.isEmpty()) {
+                RecetaLevadura rl = levaduraObs.get(0);
+                if (rl.getLevadura() != null) {
+                    if (rl.getLevadura().getAtenuacionMin() != null) atMin = rl.getLevadura().getAtenuacionMin();
+                    if (rl.getLevadura().getAtenuacionMax() != null) atMax = rl.getLevadura().getAtenuacionMax();
+                }
+            }
+
+            if (recetaService != null) {
+                double abv = recetaService.calcularABV(og, atMin, atMax);
+                lblAbvEstimado.setText(String.format("%.1f%%", abv));
+            }
+
+            double atProm = (atMin + atMax) / 2.0;
+            double fg = og - (og - 1.0) * (atProm / 100.0);
+            lblFgEstimada.setText(String.format("%.3f", fg));
         } catch (Exception ex) {
-            // ignore
+            log.debug("Error calculando ABV: {}", ex.getMessage());
         }
     }
 
     private void calcularColorEBC() {
-        double volumen = 20.0;
         try {
-            if (txtVolumenLitros.getText() != null && !txtVolumenLitros.getText().isBlank()) volumen = Double.parseDouble(txtVolumenLitros.getText());
-            double mcu = 0.0;
-            for (RecetaMalta rm : maltasObs) {
-                double kg = (rm.getCantidadGramos() != null ? rm.getCantidadGramos() : 0.0) / 1000.0;
-                double color = rm.getMalta() != null && rm.getMalta().getColorEbc() != null ? rm.getMalta().getColorEbc() : 5.0;
-                mcu += (kg * color) / volumen;
+            double volumen = parseDoubleOrDefault(txtVolumenLitros.getText(), 20.0);
+
+            if (recetaService != null && !maltasObs.isEmpty()) {
+                double ebc = recetaService.calcularColorMorey(new java.util.ArrayList<>(maltasObs), volumen);
+                lblColorEbc.setText(String.format("%.0f EBC", ebc));
+            } else {
+                lblColorEbc.setText("—");
             }
-            double srm = 1.4922 * Math.pow(mcu, 0.6859);
-            double ebc = srm * 1.97;
-            lblColorEbc.setText(String.format("%.0f EBC", ebc));
-        } catch (NumberFormatException ex) {
-            // ignore
+        } catch (Exception ex) {
+            log.debug("Error calculando Color: {}", ex.getMessage());
         }
     }
 
@@ -677,6 +912,21 @@ public class RecipeFormController implements Initializable {
         calcularIBU(null);
         calcularABV();
         calcularColorEBC();
+        actualizarEstadoBotonGuardar();
+    }
+
+    private void actualizarEstadoBotonGuardar() {
+        if (btnGuardarReceta == null) return;
+        String estilo = obtenerEstiloTexto();
+        boolean valido = txtNombre.getText() != null && !txtNombre.getText().trim().isEmpty() 
+            && estilo != null && !estilo.isBlank()
+            && txtVolumenLitros.getText() != null && !txtVolumenLitros.getText().trim().isEmpty();
+        
+        if (valido) {
+            btnGuardarReceta.setStyle("-fx-background-color: #c97e27; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-padding: 8 16 8 16; -fx-background-radius: 4px; -fx-cursor: hand;");
+        } else {
+            btnGuardarReceta.setStyle("-fx-background-color: #e0e0e0; -fx-text-fill: #666666; -fx-font-weight: normal; -fx-padding: 8 16 8 16; -fx-background-radius: 4px;");
+        }
     }
 
     @FXML
@@ -690,7 +940,7 @@ public class RecipeFormController implements Initializable {
         try {
             Receta receta = new Receta();
             receta.setNombre(txtNombre.getText().trim());
-            receta.setEstilo(cbEstilo.getValue());
+            receta.setEstilo(obtenerEstiloTexto());
             receta.setDescripcion(txaDescripcion.getText());
             
             // Validar volumen
@@ -717,6 +967,26 @@ public class RecipeFormController implements Initializable {
                 log.debug("No se pudo parsear IBU");
             }
 
+            try {
+                receta.setFgEstimada(Double.parseDouble(lblFgEstimada.getText()));
+            } catch (Exception ignored) {
+                log.debug("No se pudo parsear FG");
+            }
+
+            try {
+                String abvText = lblAbvEstimado.getText().replace("%", "").trim();
+                receta.setAbvEstimado(Double.parseDouble(abvText));
+            } catch (Exception ignored) {
+                log.debug("No se pudo parsear ABV");
+            }
+
+            try {
+                String colorText = lblColorEbc.getText().replace(" EBC", "").trim();
+                receta.setColorEbc((int) Double.parseDouble(colorText));
+            } catch (Exception ignored) {
+                log.debug("No se pudo parsear Color EBC");
+            }
+
             // Agregar ingredientes
             for (RecetaMalta rm : maltasObs) {
                 receta.agregarMalta(rm);
@@ -726,6 +996,29 @@ public class RecipeFormController implements Initializable {
             }
             for (RecetaLevadura rl : levaduraObs) {
                 receta.agregarLevadura(rl);
+            }
+            for (RecetaMiscelaneo rm : miscelaneosObs) {
+                receta.agregarMiscelaneo(rm);
+            }
+
+            // Equipo y Agua (NUEVO)
+            if (cbEquipo != null) receta.setEquipo(cbEquipo.getValue());
+            if (cbAguaPerfil != null) receta.setAguaPerfil(cbAguaPerfil.getValue());
+
+            // Macerado (delegado al sub-controller)
+            if (maceradoTabController != null) {
+                for (PasoMacerado paso : maceradoTabController.getPasosMacerado()) {
+                    receta.agregarPasoMacerado(paso);
+                }
+            }
+
+            // Fermentación y Maduración (delegado al sub-controller)
+            if (fermentacionPaneController != null) {
+                receta.setDiasFermentacion(fermentacionPaneController.getDiasFermentacion());
+                receta.setTempFermentacion(fermentacionPaneController.getTempFermentacion());
+                receta.setVolumenesCO2(fermentacionPaneController.getVolumenesCO2());
+                receta.setDiasMaduracion(fermentacionPaneController.getDiasMaduracion());
+                receta.setTempMaduracion(fermentacionPaneController.getTempMaduracion());
             }
 
             // Guardar en BD
@@ -763,12 +1056,19 @@ public class RecipeFormController implements Initializable {
         maltasObs.clear();
         lupulosObs.clear();
         levaduraObs.clear();
+        miscelaneosObs.clear();
 
         lblOgEstimada.setText("—");
         lblFgEstimada.setText("—");
         lblIbuEstimado.setText("—");
         lblAbvEstimado.setText("—");
         lblColorEbc.setText("—");
+
+        // Limpiar nuevos campos
+        if (cbEquipo != null) cbEquipo.getSelectionModel().clearSelection();
+        if (cbAguaPerfil != null) cbAguaPerfil.getSelectionModel().clearSelection();
+        if (maceradoTabController != null) maceradoTabController.limpiar();
+        if (fermentacionPaneController != null) fermentacionPaneController.limpiar();
     }
 
     @FXML
@@ -848,10 +1148,23 @@ public class RecipeFormController implements Initializable {
                 return false;
             }
 
-            // Validación 8: Estilo seleccionado (recomendado)
-            if (cbEstilo.getValue() == null) {
+            // Validación 8: Equipo y Agua Perfil
+            if (cbEquipo != null && cbEquipo.getValue() == null) {
+                mostrarAlerta(Alert.AlertType.ERROR, "❌ Sin Equipo", "La receta debe tener un equipo asociado para los cálculos.");
+                cbEquipo.requestFocus();
+                return false;
+            }
+            if (cbAguaPerfil != null && cbAguaPerfil.getValue() == null) {
+                mostrarAlerta(Alert.AlertType.ERROR, "❌ Sin Perfil de Agua", "La receta debe tener un perfil de agua asociado.");
+                cbAguaPerfil.requestFocus();
+                return false;
+            }
+
+            // Validación 9: Estilo seleccionado o escrito (recomendado)
+            String estiloTyped = obtenerEstiloTexto();
+            if (estiloTyped == null || estiloTyped.isBlank()) {
                 mostrarAlerta(Alert.AlertType.WARNING, "⚠️ Estilo No Seleccionado", 
-                    "Es recomendable seleccionar un estilo cervecero.\n\n¿Continuar sin estilo?");
+                    "Es recomendable seleccionar o escribir un estilo cervecero.\n\n¿Continuar sin estilo?");
                 return true;  // Allow pero warn
             }
 
@@ -875,7 +1188,61 @@ public class RecipeFormController implements Initializable {
 
     @FXML
     public void mostrarAcercaDe(ActionEvent event) {
-        mostrarAlerta(Alert.AlertType.INFORMATION, "Acerca de", "BrujaBeer Recetario\nVersión demo\nDesarrollado para la compañía cervecera.");
+        mostrarAlerta(Alert.AlertType.INFORMATION, "Acerca de", "BrujaBeer Recetario\nVersión 1.1 — Simulador Físico-Químico\nDesarrollado para la compañía cervecera.");
     }
 
+    // ── Helpers de parseo y sub-controllers ──────────────────────────────────
+
+    /**
+     * Parsea un String a double con manejo robusto de valores vacíos,
+     * guiones em-dash, comas decimales y errores de formato.
+     */
+    private double parseDoubleOrDefault(String text, double defaultValue) {
+        if (text == null || text.isBlank() || text.equals("—") || text.equals("-")) {
+            return defaultValue;
+        }
+        try {
+            return Double.parseDouble(text.trim().replace(",", "."));
+        } catch (NumberFormatException ex) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * Obtiene el estilo de cerveza, ya sea seleccionado de la lista o escrito a mano.
+     */
+    private String obtenerEstiloTexto() {
+        if (cbEstilo == null) return null;
+        if (cbEstilo.getEditor() != null && cbEstilo.getEditor().getText() != null && !cbEstilo.getEditor().getText().isBlank()) {
+            return cbEstilo.getEditor().getText().trim();
+        }
+        return cbEstilo.getValue();
+    }
+
+    /**
+     * Propaga datos calculados (volumen, OG, atenuación) a los sub-controllers
+     * para que actualicen sus cálculos derivados (FG, priming).
+     */
+    private void actualizarSubControllers() {
+        try {
+            double volumen = parseDoubleOrDefault(txtVolumenLitros.getText(), 20.0);
+            double og = parseDoubleOrDefault(lblOgEstimada.getText(), 1.050);
+
+            if (fermentacionPaneController != null) {
+                fermentacionPaneController.setVolumenLitros(volumen);
+                fermentacionPaneController.setOgActual(og);
+
+                if (!levaduraObs.isEmpty()) {
+                    RecetaLevadura rl = levaduraObs.get(0);
+                    if (rl.getLevadura() != null) {
+                        fermentacionPaneController.setAtenuacion(
+                                rl.getLevadura().getAtenuacionMin(),
+                                rl.getLevadura().getAtenuacionMax());
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            log.debug("Error actualizando sub-controllers: {}", ex.getMessage());
+        }
+    }
 }

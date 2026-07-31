@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,8 +30,10 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Receta {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -87,6 +90,61 @@ public class Receta {
     @Column(name = "color_ebc")
     private Integer colorEbc;
 
+    // ── Perfil de Equipo ────────────────────────────────────────────────────
+
+    /**
+     * Equipo cervecero asociado a esta receta.
+     * La eficiencia del equipo se usa para calcular la OG estimada.
+     */
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "equipo_id")
+    private Equipo equipo;
+
+    // ── Perfil de Agua ──────────────────────────────────────────────────────
+
+    /**
+     * Perfil químico del agua usada en esta receta.
+     * Los iones afectan el pH del macerado y el perfil de sabor.
+     */
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "agua_perfil_id")
+    private AguaPerfil aguaPerfil;
+
+    /** Mililitros de ácido láctico agregados al agua para corrección de pH. */
+    @Column(name = "acido_lactico")
+    private Double acidoLactico;
+
+    /** Sales minerales agregadas al agua (texto libre o JSON). */
+    @Column(name = "sales_agregadas", columnDefinition = "TEXT")
+    private String salesAgregadas;
+
+    // ── Fermentación y Carbonatación ────────────────────────────────────────
+
+    /** Días totales de fermentación primaria. Típico: 7–14 días. */
+    @Column(name = "dias_fermentacion")
+    private Integer diasFermentacion;
+
+    /** Temperatura de fermentación en °C. Depende de la cepa de levadura. */
+    @Column(name = "temp_fermentacion")
+    private Double tempFermentacion;
+
+    /**
+     * Volúmenes de CO₂ deseados para carbonatación.
+     * Ej: 2.0–2.5 para Ales, 2.5–3.0 para Lagers, 3.0–4.5 para estilos belgas.
+     */
+    @Column(name = "volumenes_co2")
+    private Double volumenesCO2;
+
+    // ── Maduración (Cold Crash) ─────────────────────────────────────────────
+
+    /** Días de maduración o cold crash. */
+    @Column(name = "dias_maduracion")
+    private Integer diasMaduracion;
+
+    /** Temperatura de maduración en °C. Típicamente cerca de 0°C. */
+    @Column(name = "temp_maduracion")
+    private Double tempMaduracion;
+
     @Column(name = "fecha_creacion")
     private LocalDate fechaCreacion;
 
@@ -105,6 +163,12 @@ public class Receta {
 
     @OneToMany(mappedBy = "receta", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RecetaLevadura> levaduras = new ArrayList<>();
+
+    @OneToMany(mappedBy = "receta", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<PasoMacerado> pasosMacerado = new ArrayList<>();
+
+    @OneToMany(mappedBy = "receta", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<RecetaMiscelaneo> miscelaneos = new ArrayList<>();
 
     // ── Hooks de ciclo de vida JPA ──────────────────────────────────────────
 
@@ -128,6 +192,16 @@ public class Receta {
     public void agregarLevadura(RecetaLevadura recetaLevadura) {
         levaduras.add(recetaLevadura);
         recetaLevadura.setReceta(this);
+    }
+
+    public void agregarPasoMacerado(PasoMacerado paso) {
+        pasosMacerado.add(paso);
+        paso.setReceta(this);
+    }
+
+    public void agregarMiscelaneo(RecetaMiscelaneo miscelaneo) {
+        miscelaneos.add(miscelaneo);
+        miscelaneo.setReceta(this);
     }
 
     @Override

@@ -47,10 +47,16 @@
 .button:hover {
     -fx-background-color: #e0e0e0;
     -fx-border-color: #bbb;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 1);
 }
 
 .button:pressed {
     -fx-background-color: #d0d0d0;
+}
+
+.button:disabled {
+    -fx-opacity: 0.5;
+    -fx-cursor: default;
 }
 
 /* Botón principal (Guardar) */
@@ -63,6 +69,19 @@
 
 .button:default-button:hover {
     -fx-base: #d99239;
+    -fx-effect: dropshadow(gaussian, rgba(201,126,39,0.3), 6, 0, 0, 2);
+}
+
+/* Botón de peligro (Eliminar) */
+.boton-peligro {
+    -fx-background-color: #ff6b6b;
+    -fx-text-fill: white;
+    -fx-border-color: #e55656;
+}
+
+.boton-peligro:hover {
+    -fx-background-color: #ff5252;
+    -fx-effect: dropshadow(gaussian, rgba(255,107,107,0.3), 6, 0, 0, 2);
 }
 
 /* ── CAMPOS DE TEXTO ──────────────────────────────────────────────────────────────── */
@@ -72,7 +91,7 @@
     -fx-border-color: #ddd;
     -fx-border-width: 1;
     -fx-border-radius: 3;
-    -fx-background-color: #white;
+    -fx-background-color: white;
     -fx-text-fill: #333;
     -fx-font-size: 11px;
 }
@@ -82,10 +101,17 @@
     -fx-border-color: #c97e27;
     -fx-border-width: 2;
     -fx-background-color: #fffef5;
+    -fx-effect: dropshadow(gaussian, rgba(201,126,39,0.15), 6, 0, 0, 0);
+}
+
+.text-field:disabled,
+.text-area:disabled {
+    -fx-opacity: 0.6;
+    -fx-background-color: #f0f0f0;
 }
 
 /* Estilo para error en campos */
-.text-field:error {
+.text-field-error {
     -fx-border-color: #ff6b6b;
     -fx-border-width: 2;
 }
@@ -96,17 +122,22 @@
     -fx-border-color: #ddd;
     -fx-border-width: 1;
     -fx-border-radius: 3;
-    -fx-background-color: #white;
+    -fx-background-color: white;
     -fx-font-size: 11px;
 }
 
 .combo-box:focused {
     -fx-border-color: #c97e27;
     -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(201,126,39,0.15), 6, 0, 0, 0);
+}
+
+.combo-box:disabled {
+    -fx-opacity: 0.6;
 }
 
 .combo-box-popup .list-view {
-    -fx-background-color: #white;
+    -fx-background-color: white;
 }
 
 .combo-box-popup .list-view .list-cell {
@@ -127,10 +158,29 @@
     -fx-font-weight: bold;
 }
 
+/* Label de resultado (valores calculados) */
+.label-resultado {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #c97e27;
+}
+
+/* Label de sección */
+.label-seccion {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6b4423;
+    -fx-padding: 4 0 2 0;
+}
+
 /* ── TABPANE ──────────────────────────────────────────────────────────────────────── */
 .tab-pane {
     -fx-background-color: #f8f9fa;
     -fx-padding: 0;
+}
+
+.tab-pane > .tab-header-area > .tab-header-background {
+    -fx-background-color: #f0f0f0;
 }
 
 .tab {
@@ -143,7 +193,7 @@
 }
 
 .tab:selected {
-    -fx-background-color: #white;
+    -fx-background-color: white;
     -fx-text-fill: #c97e27;
     -fx-border-color: #c97e27;
     -fx-border-width: 0 0 3 0;
@@ -155,7 +205,7 @@
 
 /* ── TABLEVIEW ────────────────────────────────────────────────────────────────────── */
 .table-view {
-    -fx-background-color: #white;
+    -fx-background-color: white;
     -fx-border-color: #e0e0e0;
     -fx-border-width: 1;
 }
@@ -175,6 +225,15 @@
     -fx-border-width: 0 0 1 0;
 }
 
+/* Filas alternadas para mejor legibilidad */
+.table-view .table-row-cell:odd {
+    -fx-background-color: #fafafa;
+}
+
+.table-view .table-row-cell:even {
+    -fx-background-color: white;
+}
+
 .table-view .table-row-cell:selected {
     -fx-background-color: #ffe8d0;
 }
@@ -183,9 +242,19 @@
     -fx-text-fill: #333;
 }
 
+.table-view .table-row-cell:hover {
+    -fx-background-color: #fff5eb;
+}
+
 .table-view .table-cell {
     -fx-text-fill: #333;
     -fx-padding: 6;
+}
+
+/* Tabla vacía — mensaje placeholder */
+.table-view .placeholder .label {
+    -fx-text-fill: #999;
+    -fx-font-style: italic;
 }
 
 /* ── LISTVIEW ──────────────────────────────────────────────────────────────────────── */
@@ -213,9 +282,22 @@
     -fx-font-weight: bold;
 }
 
+/* ── DATEPICKER ──────────────────────────────────────────────────────────────────── */
+.date-picker {
+    -fx-border-color: #ddd;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+    -fx-background-color: white;
+}
+
+.date-picker:focused {
+    -fx-border-color: #c97e27;
+    -fx-border-width: 2;
+}
+
 /* ── MENUBAR y MENUS ──────────────────────────────────────────────────────────────── */
 .menu-bar {
-    -fx-background-color: #white;
+    -fx-background-color: white;
     -fx-border-color: #e0e0e0;
     -fx-border-width: 0 0 1 0;
 }
@@ -231,7 +313,7 @@
 }
 
 .context-menu {
-    -fx-background-color: #white;
+    -fx-background-color: white;
     -fx-border-color: #ddd;
 }
 
@@ -245,6 +327,23 @@
     -fx-border-color: #e0e0e0;
     -fx-border-width: 0 0 1 0;
     -fx-padding: 8 12 8 12;
+}
+
+/* ── TITLED PANE (secciones colapsables) ─────────────────────────────────────────── */
+.titled-pane > .title {
+    -fx-background-color: #f0f0f0;
+    -fx-text-fill: #6b4423;
+    -fx-font-weight: bold;
+    -fx-padding: 8 12 8 12;
+    -fx-border-color: #ddd;
+    -fx-border-width: 0 0 1 0;
+}
+
+.titled-pane > .content {
+    -fx-background-color: white;
+    -fx-padding: 12;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 1 1 1;
 }
 
 /* ── SEPARATOR ────────────────────────────────────────────────────────────────────── */
@@ -281,6 +380,36 @@
     -fx-background-color: #a0a0a0;
 }
 
+/* ── TOOLTIP ──────────────────────────────────────────────────────────────────────── */
+.tooltip {
+    -fx-background-color: #333;
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-padding: 6 10 6 10;
+    -fx-background-radius: 4;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
+}
+
+/* ── PROGRESS BAR ────────────────────────────────────────────────────────────────── */
+.progress-bar > .track {
+    -fx-background-color: #e0e0e0;
+    -fx-background-radius: 3;
+}
+
+.progress-bar > .bar {
+    -fx-background-color: #c97e27;
+    -fx-background-radius: 3;
+}
+
+/* ── ALERT / DIALOG ──────────────────────────────────────────────────────────────── */
+.dialog-pane {
+    -fx-background-color: white;
+}
+
+.dialog-pane > .button-bar > .container {
+    -fx-padding: 12;
+}
+
 /* ════════════════════════════════════════════════════════════════════════════════
    PERSONALIZACIÓN FÁCIL: Reemplazar estos valores en el CSS
 
@@ -295,4 +424,3 @@
    - Naranja artesanal: #ff6633
    - Marrón claro: #d4860a
    ════════════════════════════════════════════════════════════════════════════════ */
-
