@@ -1,4 +1,4 @@
-# 🍺 BrujaBeer V1.2 — Recetario & Sistema de Gestión Cervecera
+# BrujaBeer V1.2 — Recetario y Sistema de Gestion Cervecera
 
 ![Java 21](https://img.shields.io/badge/Java-21-orange.svg)
 ![Spring Boot 3.3](https://img.shields.io/badge/Spring_Boot-3.3-green.svg)
@@ -6,91 +6,90 @@
 ![Database](https://img.shields.io/badge/Database-H2_Embedded-red.svg)
 ![Status](https://img.shields.io/badge/Status-Portable_v1.2-gold.svg)
 
-Aplicación de escritorio **100% portable y profesional** diseñada para cervecerías artesanales. Integra un simulador físico-químico completo, control de lotes de cocción, historial interactivo y gestión documental.
+Aplicacion de escritorio portable diseñada para cervecerias artesanales. Integra simulador fisico-quimico, control de lotes de coccion, historial interactivo y gestion documental operativa.
 
 ---
 
-## 🌟 Novedades V1.2
+## Novedades Version 1.2
 
-- 🌓 **Modo Claro / Modo Oscuro**: Selector rápido en la cabecera (☀️ / 🌙) con persistencia automática de preferencias.
-- 🎨 **Rediseño Visual Moderno**: Sistema de estilos CSS semánticos centralizados, esquinas redondeadas, sombras suaves y tipografía limpia.
-- 📜 **Historial Interactivo**: Doble clic sobre cualquier lote del historial para cargar y revisar todos los datos de esa cocción en el formulario.
-- 🧪 **Feedback de Elaboración**: Alertas automáticas de control de pH y comentarios del cervecero actualizados al instante en pantalla.
-- 🚀 **Ejecutable Nativo (`BrujaBeer.exe`)**: Acceso directo sin ventanas negras de consola (CMD/PowerShell) con el logo oficial de la marca.
-
----
-
-## 🌟 Módulos Principales
-
-### 🍺 1. Recetario & Simulador Cervecero
-- **Cálculo de Densidades**: OG (Inicial) y FG (Final) estimadas en tiempo real.
-- **Amargor Tinseth (IBU)**: Cálculo científico según tiempo de hervor y porcentaje de ácidos alfa.
-- **Color Morey (EBC)**: Determinación de color EBC/SRM según el grist de maltas.
-- **Cálculo de Priming**: Dextrosa requerida en gramos según volúmenes de CO₂ deseados y temperatura de fermentación.
-- **Estilos Editables**: Selección de lista BJCP o ingreso de estilos personalizados a mano.
-
-### 📊 2. Lotes de Cocción (Día de Elaboración)
-- **Medición de Control**: Registro de pH de macerado (con alertas automáticas de rango óptimo 5.2–5.6) y pH de lavado.
-- **Eficiencia Brewhouse Real (%)**: Cálculo del rendimiento real del equipo por lote considerando la extracción de cada malta.
-- **Mediciones Reales**: Registro de OG real, FG real, litros finales y ABV real (%) obtenido.
-- **Historial Completo**: Registro persistido por fecha y número de lote con apertura por doble clic.
-
-### 🎒 3. Mochila de Producción (Documentos & PDFs)
-- **Gestión Documental**: Almacenamiento y organización de manuales de equipo, fichas técnicas y POEs de limpieza.
-- **Carpetas Personalizadas**: Creación de subcarpetas jerárquicas.
-- **Subir y Mover PDFs**: Importar documentos y moverlos de carpeta fácilmente.
-- **Visor Integrado**: Apertura directa en el visor predeterminado del sistema operativo.
+- **Modo Claro / Modo Oscuro**: Selector de tema integrado en la interfaz con persistencia automatica de preferencias del usuario.
+- **Rediseño Visual**: Sistema de estilos CSS semanticos centralizados, esquinas redondeadas, sombras suaves y tipografia optimizada para lectura prolongada.
+- **Historial Interactivo**: Doble clic sobre cualquier lote del historial para cargar y auditar todos los parametros de la coccion en el formulario.
+- **Control de Elaboracion**: Retroalimentacion inmediata con alertas automaticas de pH y actualizacion de comentarios tecnicos al registrar el lote.
+- **Ejecutable Nativo (`BrujaBeer.exe`)**: Acceso directo para entornos Windows sin ventanas auxiliares de consola (CMD o PowerShell).
 
 ---
 
-## 🛠 Tecnologías Utilizadas
+## Modulos del Sistema
 
-- **Core**: Java 21 LTS
-- **Framework UI**: JavaFX 21
-- **Backend & IoC**: Spring Boot 3.3 + Spring Data JPA
-- **Persistencia**: H2 Database (embebida en archivo local `brujabeer-data.mv.db`, sin dependencias externas)
-- **Build System**: Apache Maven 3.9
+### 1. Recetario y Simulador Cervecero
+- **Calculo de Densidades**: Gravedad inicial (OG) y final (FG) estimadas en tiempo real a partir del grist de granos y la atenuacion de la levadura.
+- **Calculo de Amargor (IBU)**: Formula cientifica de Tinseth basada en tiempo de ebullicion, gravedad del mosto y porcentaje de alfa acidos.
+- **Calculo de Color (EBC)**: Determinacion de color segun formula de Morey (MCU/SRM/EBC).
+- **Calculo de Priming**: Estimacion de dextrosa en gramos segun volumenes de CO2 objetivo y temperatura de fermentacion.
+- **Gestion de Estilos**: Compatibilidad con nomenclatura BJCP e ingreso de perfiles personalizados.
+
+### 2. Lotes de Coccion y Control de Calidad
+- **Monitoreo de pH**: Registro y evaluacion de pH de macerado (rango optimo 5.2 - 5.6) y pH de lavado.
+- **Eficiencia Brewhouse Real**: Calculo del rendimiento real del equipo en base al extracto obtenido por cada malta utilizada.
+- **Metricas Reales**: Captura de volumen final, densidades reales y porcentaje de alcohol por volumen (ABV) obtenido.
+- **Trazabilidad**: Base de datos de registros historicos ordenados cronologicamente.
+
+### 3. Mochila de Produccion (Documentacion y Protocolos)
+- **Repositorio Tecnico**: Organizacion local de manuales de maquinaria, fichas tecnicas de insumos y Procedimientos Operativos Estandarizados (POE).
+- **Estructura por Carpetas**: Creacion y administracion de directorios tematicos.
+- **Gestion de Archivos**: Importacion, reubicacion y visualizacion directa en el visor predeterminado del sistema operativo.
 
 ---
 
-## 🚀 Cómo Ejecutar
+## Tecnologias Utilizadas
 
-### 📦 Modo Portable (Recomendado para producción)
-1. Descargar la carpeta de distribución `BrujaBeer-V1.2`.
-2. Asegurarse de tener **Java 21** instalado en la computadora.
-3. Hacer doble-clic en `BrujaBeer.exe`.
+- **Lenguaje**: Java 21 LTS
+- **Interfaz de Usuario**: JavaFX 21
+- **Arquitectura y Servicios**: Spring Boot 3.3 (Spring Data JPA, Context, Beans)
+- **Base de Datos**: H2 Database embebida (almacenamiento en archivo local `brujabeer-data.mv.db`)
+- **Herramienta de Construccion**: Apache Maven 3.9
 
-### 💻 Modo Desarrollo (Desde código fuente)
+---
+
+## Instrucciones de Uso
+
+### Modo Portable (Produccion)
+1. Descargar o transferir la carpeta `BrujaBeer-V1.2`.
+2. Verificar que el entorno cuente con **Java 21** o superior instalado.
+3. Ejecutar el archivo `BrujaBeer.exe`.
+
+### Modo Desarrollo (Compilacion desde codigo fuente)
 ```bash
-# Clonar repositorio
+# Clonar el repositorio
 git clone https://github.com/santiagustintorres06-dotcom/brujabeer-recetario.git
 cd brujabeer-recetario
 
-# Compilar y ejecutar pruebas
+# Compilar y ejecutar pruebas unitarias
 mvn clean package
 
-# Iniciar la aplicación
+# Ejecutar la aplicacion
 mvn javafx:run
 ```
 
 ---
 
-## 📁 Estructura del Proyecto
+## Estructura del Repositorio
 
 ```
 brujabeer-recetario/
 ├── src/main/java/com/brujabeer/recetario/
-│   ├── model/          # Entidades JPA (Receta, Malta, Lupulo, Lote, etc.)
-│   ├── repository/     # Interfaces Spring Data JPA
-│   ├── service/        # Lógica de negocio y fórmulas fisicoquímicas
-│   └── ui/controller/  # Controladores JavaFX
+│   ├── model/          # Entidades de dominio JPA (Receta, Malta, Lupulo, Lote, etc.)
+│   ├── repository/     # Repositorios de persistencia Spring Data
+│   ├── service/        # Logica de negocio y modelos de calculo matematico
+│   └── ui/controller/  # Controladores de vistas JavaFX
 ├── src/main/resources/
-│   ├── fxml/           # Vistas de interfaz de usuario
-│   ├── styles/         # Hojas de estilo CSS (temas claro/oscuro)
-│   └── images/         # Recursos gráficos y logo
-└── pom.xml             # Configuración y dependencias Maven
+│   ├── fxml/           # Definicion de interfaces graficas FXML
+│   ├── styles/         # Estilos CSS centralizados (temas claro y oscuro)
+│   └── images/         # Recursos visuales y logotipo
+└── pom.xml             # Configuracion de dependencias y plugins de construccion
 ```
 
 ---
 
-Desarrollado para **La Bruja Beer — Cervecería Artesanal**.
+Desarrollado para **La Bruja Beer — Cerveceria Artesanal**.
