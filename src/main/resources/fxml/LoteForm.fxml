@@ -4,7 +4,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TextArea?>
@@ -19,18 +18,18 @@
 <?import javafx.geometry.Insets?>
 
 <!--
-  BrujaBeer LoteForm.fxml — Módulo de Lotes de Cocción (Batch)
+  BrujaBeer LoteForm.fxml — Módulo de Lotes de Cocción V1.2
+  CONTROLADOR: com.brujabeer.recetario.ui.controller.LoteFormController
 -->
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.brujabeer.recetario.ui.controller.LoteFormController"
-            style="-fx-font-family: 'Segoe UI', Arial, sans-serif;">
+            fx:controller="com.brujabeer.recetario.ui.controller.LoteFormController">
     <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
 
-    <!-- CABECERA: Toolbar con título del módulo -->
+    <!-- CABECERA -->
     <top>
-        <VBox spacing="0" style="-fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
-            <ToolBar style="-fx-padding: 8; -fx-background-color: #f8f9fa;">
+        <VBox spacing="0">
+            <ToolBar styleClass="bb-toolbar">
                 <HBox spacing="10" alignment="CENTER_LEFT">
                     <ImageView fitHeight="40" preserveRatio="true">
                         <image>
@@ -38,43 +37,37 @@
                         </image>
                     </ImageView>
                     <VBox spacing="2">
-                        <Label text="🍺 BrujaBeer — Módulo de Lotes de Cocción"
-                               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
-                        <Label text="v1.1 | Registro y Control de Día de Cocción"
-                               style="-fx-font-size: 11px; -fx-text-fill: #666;" />
+                        <Label text="🍺 BrujaBeer — Módulo de Lotes de Cocción" styleClass="bb-header-title" />
+                        <Label text="v1.2 | Registro y Control de Día de Cocción" styleClass="bb-header-subtitle" />
                     </VBox>
                 </HBox>
             </ToolBar>
         </VBox>
     </top>
 
-    <!-- CENTRO: Formulario de registro de cocción -->
+    <!-- CENTRO: Formulario -->
     <center>
         <VBox spacing="14" style="-fx-padding: 12;">
 
             <!-- SECCIÓN 1: Selección de Receta -->
-            <VBox spacing="8" style="-fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-padding: 12; -fx-background-color: #fafafa;">
-                <Label text="📋 Receta a Cocinar"
-                       style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #333;" />
+            <VBox spacing="8" styleClass="bb-card">
+                <Label text="📋 Receta a Cocinar" styleClass="bb-section-title" />
                 <HBox spacing="12" alignment="CENTER_LEFT">
-                    <Label text="Receta:" style="-fx-font-weight: bold;" />
+                    <Label text="Receta:" styleClass="bb-field-label" />
                     <ComboBox fx:id="cbReceta" prefWidth="400"
-                              promptText="Seleccioná la receta para esta cocción..."
-                              style="-fx-padding: 4; -fx-font-size: 11;" />
+                              promptText="Seleccioná la receta para esta cocción..." />
                 </HBox>
                 <HBox spacing="12" alignment="CENTER_LEFT">
-                    <Label text="Estilo:" style="-fx-font-weight: bold;" />
-                    <Label fx:id="lblEstiloReceta" text="—"
-                           style="-fx-font-size: 12px; -fx-text-fill: #c97e27; -fx-font-weight: bold;" />
+                    <Label text="Estilo:" styleClass="bb-field-label" />
+                    <Label fx:id="lblEstiloReceta" text="—" styleClass="bb-result-value" />
                 </HBox>
             </VBox>
 
             <!-- SECCIÓN 2: Control de pH -->
-            <VBox spacing="8" style="-fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-padding: 12; -fx-background-color: #fafafa;">
-                <Label text="🧪 Control de pH"
-                       style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #333;" />
+            <VBox spacing="8" styleClass="bb-card">
+                <Label text="🧪 Control de pH" styleClass="bb-section-title" />
                 <Label text="Rango óptimo de macerado: 5.2 – 5.6 | Lavado: por debajo de 6.0"
-                       style="-fx-font-size: 10px; -fx-text-fill: #888; -fx-font-style: italic;" />
+                       styleClass="bb-info-text" />
 
                 <GridPane hgap="12" vgap="8">
                     <columnConstraints>
@@ -85,21 +78,20 @@
                     </columnConstraints>
 
                     <Label text="pH Macerado:" GridPane.rowIndex="0" GridPane.columnIndex="0"
-                           style="-fx-font-weight: bold;" />
+                           styleClass="bb-field-label" />
                     <TextField fx:id="txtPhMacerado" GridPane.rowIndex="0" GridPane.columnIndex="1"
-                               promptText="Ej: 5.35" style="-fx-padding: 6; -fx-font-size: 11;" />
+                               promptText="Ej: 5.35" />
 
                     <Label text="pH Lavado:" GridPane.rowIndex="0" GridPane.columnIndex="2"
-                           style="-fx-font-weight: bold;" />
+                           styleClass="bb-field-label" />
                     <TextField fx:id="txtPhLavado" GridPane.rowIndex="0" GridPane.columnIndex="3"
-                               promptText="Ej: 5.80" style="-fx-padding: 6; -fx-font-size: 11;" />
+                               promptText="Ej: 5.80" />
                 </GridPane>
             </VBox>
 
             <!-- SECCIÓN 3: Densidades y Volúmenes -->
-            <VBox spacing="8" style="-fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-padding: 12; -fx-background-color: #fafafa;">
-                <Label text="📊 Densidades y Volúmenes"
-                       style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #333;" />
+            <VBox spacing="8" styleClass="bb-card">
+                <Label text="📊 Densidades y Volúmenes" styleClass="bb-section-title" />
 
                 <GridPane hgap="12" vgap="8">
                     <columnConstraints>
@@ -109,95 +101,82 @@
                         <ColumnConstraints percentWidth="30" />
                     </columnConstraints>
 
-                    <!-- Fila 1: Pre-Hervor (solo densidad, litros removido) -->
+                    <!-- Fila 1: Pre-Hervor -->
                     <Label text="Densidad Pre-Hervor:" GridPane.rowIndex="0" GridPane.columnIndex="0"
-                           style="-fx-font-weight: bold;" />
+                           styleClass="bb-field-label" />
                     <TextField fx:id="txtDensidadPreHervor" GridPane.rowIndex="0" GridPane.columnIndex="1"
-                               promptText="Ej: 1.042" style="-fx-padding: 6; -fx-font-size: 11;" />
+                               promptText="Ej: 1.042" />
 
                     <!-- Fila 2: Post-Hervor (OG real) -->
                     <Label text="OG Real (Post-Hervor):" GridPane.rowIndex="1" GridPane.columnIndex="0"
-                           style="-fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                           styleClass="bb-field-label bb-field-important" />
                     <TextField fx:id="txtDensidadInicialReal" GridPane.rowIndex="1" GridPane.columnIndex="1"
-                               promptText="Ej: 1.058"
-                               style="-fx-padding: 6; -fx-font-size: 11; -fx-border-color: #c97e27; -fx-border-width: 2;" />
+                               promptText="Ej: 1.058" styleClass="bb-field-important" />
 
                     <Label text="Litros Finales:" GridPane.rowIndex="1" GridPane.columnIndex="2"
-                           style="-fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                           styleClass="bb-field-label bb-field-important" />
                     <TextField fx:id="txtLitrosFinalesReal" GridPane.rowIndex="1" GridPane.columnIndex="3"
-                               promptText="Ej: 20"
-                               style="-fx-padding: 6; -fx-font-size: 11; -fx-border-color: #c97e27; -fx-border-width: 2;" />
+                               promptText="Ej: 20" styleClass="bb-field-important" />
 
                     <!-- Fila 3: Post-Fermentación (FG real) -->
                     <Label text="FG Real (Densidad Final):" GridPane.rowIndex="2" GridPane.columnIndex="0"
-                           style="-fx-font-weight: bold; -fx-text-fill: #27ae60;" />
+                           styleClass="bb-field-label bb-field-success" />
                     <TextField fx:id="txtDensidadFinalReal" GridPane.rowIndex="2" GridPane.columnIndex="1"
-                               promptText="Ej: 1.012"
-                               style="-fx-padding: 6; -fx-font-size: 11; -fx-border-color: #27ae60; -fx-border-width: 1.5;" />
+                               promptText="Ej: 1.012" styleClass="bb-field-success" />
                 </GridPane>
             </VBox>
 
-            <!-- SECCIÓN 4: Comentarios del cervecero -->
-            <VBox spacing="8" style="-fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-padding: 12; -fx-background-color: #fafafa;">
-                <Label text="📝 Comentarios / Notas de Cocción"
-                       style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #333;" />
+            <!-- SECCIÓN 4: Comentarios -->
+            <VBox spacing="8" styleClass="bb-card">
+                <Label text="📝 Comentarios / Notas de Cocción" styleClass="bb-section-title" />
                 <TextArea fx:id="txaComentarios" prefRowCount="3" wrapText="true"
-                          promptText="Anotá contratiempos, ajustes hechos durante la cocción, etc."
-                          style="-fx-padding: 6; -fx-font-size: 11;" />
+                          promptText="Anotá contratiempos, ajustes hechos durante la cocción, etc." />
             </VBox>
 
-            <!-- SECCIÓN 5: Resultado de eficiencia (solo lectura, se muestra después de guardar) -->
-            <HBox spacing="15" alignment="CENTER_LEFT"
-                  style="-fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-padding: 12; -fx-background-color: #fafafa;">
-                <Label text="⚙️ Resultado Calculado:" style="-fx-font-weight: bold;" />
+            <!-- SECCIÓN 5: Resultado (solo lectura) -->
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="bb-card">
+                <Label text="⚙️ Resultado Calculado:" styleClass="bb-field-label" />
                 <Separator orientation="VERTICAL" />
 
                 <VBox spacing="2" alignment="CENTER">
-                    <Label text="Eficiencia Real" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
-                    <Label fx:id="lblEficienciaReal" text="— %"
-                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                    <Label text="Eficiencia Real" styleClass="bb-result-label" />
+                    <Label fx:id="lblEficienciaReal" text="— %" styleClass="bb-result-value" />
                 </VBox>
 
                 <VBox spacing="2" alignment="CENTER">
-                    <Label text="OG Real" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
-                    <Label fx:id="lblOgReal" text="—"
-                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                    <Label text="OG Real" styleClass="bb-result-label" />
+                    <Label fx:id="lblOgReal" text="—" styleClass="bb-result-value" />
                 </VBox>
 
                 <VBox spacing="2" alignment="CENTER">
-                    <Label text="FG Real" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
-                    <Label fx:id="lblFgReal" text="—"
-                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #27ae60;" />
+                    <Label text="FG Real" styleClass="bb-result-label" />
+                    <Label fx:id="lblFgReal" text="—" styleClass="bb-result-value" />
                 </VBox>
 
                 <VBox spacing="2" alignment="CENTER">
-                    <Label text="ABV Real" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
-                    <Label fx:id="lblAbvReal" text="— %"
-                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #27ae60;" />
+                    <Label text="ABV Real" styleClass="bb-result-label" />
+                    <Label fx:id="lblAbvReal" text="— %" styleClass="bb-result-value" />
                 </VBox>
 
                 <VBox spacing="2" alignment="CENTER">
-                    <Label text="Litros Finales" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
-                    <Label fx:id="lblLitrosFinales" text="—"
-                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                    <Label text="Litros Finales" styleClass="bb-result-label" />
+                    <Label fx:id="lblLitrosFinales" text="—" styleClass="bb-result-value" />
                 </VBox>
 
                 <VBox spacing="2" alignment="CENTER">
-                    <Label text="pH Macerado" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
-                    <Label fx:id="lblPhStatus" text="—"
-                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                    <Label text="pH Macerado" styleClass="bb-result-label" />
+                    <Label fx:id="lblPhStatus" text="—" styleClass="bb-result-value" />
                 </VBox>
             </HBox>
 
         </VBox>
     </center>
 
-    <!-- LADO DERECHO: Historial de lotes registrados -->
+    <!-- LADO DERECHO: Historial -->
     <right>
-        <VBox spacing="8" prefWidth="280"
-              style="-fx-border-color: #e0e0e0; -fx-border-width: 0 0 0 1; -fx-padding: 12;">
-            <Label text="📜 Historial de Lotes"
-                   style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #333;" />
+        <VBox spacing="8" prefWidth="280" styleClass="bb-sidebar">
+            <Label text="📜 Historial de Lotes" styleClass="bb-section-title" />
+            <Label text="Doble-clic para ver los datos de un lote" styleClass="bb-info-text" />
             <TableView fx:id="tblHistorialLotes" prefHeight="400">
                 <columns>
                     <TableColumn fx:id="colNroLote" text="Nro Lote" prefWidth="70" />
@@ -210,12 +189,9 @@
 
     <!-- PIE: Botones de acción -->
     <bottom>
-        <HBox spacing="10" alignment="CENTER_RIGHT"
-              style="-fx-border-color: #e0e0e0; -fx-border-width: 1 0 0 0; -fx-padding: 12; -fx-background-color: #f8f9fa;">
-            <Button text="🔄 Limpiar" onAction="#limpiarFormulario"
-                    style="-fx-padding: 8 16 8 16; -fx-font-size: 11px;" />
-            <Button text="🧪 Registrar Cocción" onAction="#registrarCoccion"
-                    style="-fx-padding: 8 16 8 16; -fx-font-size: 11px; -fx-font-weight: bold; -fx-background-color: #c97e27; -fx-text-fill: #ffffff; -fx-background-radius: 4;" />
+        <HBox spacing="10" alignment="CENTER_RIGHT" styleClass="bb-footer">
+            <Button text="🔄 Limpiar" onAction="#limpiarFormulario" styleClass="bb-btn-secondary" />
+            <Button text="🧪 Registrar Cocción" onAction="#registrarCoccion" styleClass="bb-btn-primary" />
         </HBox>
     </bottom>
 

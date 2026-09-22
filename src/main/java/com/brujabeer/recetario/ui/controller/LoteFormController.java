@@ -94,6 +94,16 @@ public class LoteFormController implements Initializable {
         // Listener: al desplegar o hacer clic en cbReceta, recargar recetas de la BD
         cbReceta.setOnShowing(e -> cargarRecetas());
 
+        // ── BUG FIX: Doble-clic en historial abre el lote seleccionado ──────
+        tblHistorialLotes.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                Lote seleccionado = tblHistorialLotes.getSelectionModel().getSelectedItem();
+                if (seleccionado != null) {
+                    cargarLoteEnFormulario(seleccionado);
+                }
+            }
+        });
+
         log.info("✅ LoteFormController inicializado correctamente.");
     }
 
@@ -264,8 +274,13 @@ public class LoteFormController implements Initializable {
             // ── Actualizar panel de resultados ──────────────────────────
             actualizarPanelResultados(loteGuardado);
 
-            // ── Actualizar historial ────────────────────────────────────
-            historialObs.add(0, loteGuardado);
+            // ── BUG FIX: Reflejar comentarios/alertas automáticas en la UI ──
+            if (loteGuardado.getComentarios() != null && !loteGuardado.getComentarios().isBlank()) {
+                txaComentarios.setText(loteGuardado.getComentarios());
+            }
+
+            // ── BUG FIX: Recargar historial completo desde la BD ────────
+            cargarHistorialLotes();
 
             // ── Mostrar Alert de éxito ──────────────────────────────────
             String mensajeExito = construirMensajeExito(loteGuardado, recetaSeleccionada);
@@ -431,6 +446,74 @@ public class LoteFormController implements Initializable {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Carga los datos de un lote del historial en el formulario.
+     * Permite ver o verificar los datos de una cocción pasada.
+     */
+    private void cargarLoteEnFormulario(Lote lote) {
+        if (lote == null) return;
+
+        log.info("📋 Cargando lote #{} en formulario.", lote.getNroLote());
+
+        // Seleccionar la receta del lote en el ComboBox
+        if (lote.getReceta() != null) {
+            for (Receta r : cbReceta.getItems()) {
+                if (r.getId() != null && r.getId().equals(lote.getReceta().getId())) {
+                    cbReceta.setValue(r);
+                    break;
+                }
+            }
+        }
+
+        // Cargar campos de control
+        if (lote.getPhMacerado() != null) {
+            txtPhMacerado.setText(String.format("%.2f", lote.getPhMacerado()));
+        } else {
+            txtPhMacerado.clear();
+        }
+
+        if (lote.getPhLavado() != null) {
+            txtPhLavado.setText(String.format("%.2f", lote.getPhLavado()));
+        } else {
+            txtPhLavado.clear();
+        }
+
+        if (lote.getDensidadPreHervor() != null) {
+            txtDensidadPreHervor.setText(String.format("%.3f", lote.getDensidadPreHervor()));
+        } else {
+            txtDensidadPreHervor.clear();
+        }
+
+        if (lote.getDensidadInicialReal() != null) {
+            txtDensidadInicialReal.setText(String.format("%.3f", lote.getDensidadInicialReal()));
+        } else {
+            txtDensidadInicialReal.clear();
+        }
+
+        if (lote.getLitrosFinalesReal() != null) {
+            txtLitrosFinalesReal.setText(String.format("%.1f", lote.getLitrosFinalesReal()));
+        } else {
+            txtLitrosFinalesReal.clear();
+        }
+
+        if (txtDensidadFinalReal != null) {
+            if (lote.getDensidadFinalReal() != null) {
+                txtDensidadFinalReal.setText(String.format("%.3f", lote.getDensidadFinalReal()));
+            } else {
+                txtDensidadFinalReal.clear();
+            }
+        }
+
+        if (lote.getComentarios() != null) {
+            txaComentarios.setText(lote.getComentarios());
+        } else {
+            txaComentarios.clear();
+        }
+
+        // Cargar panel de resultados
+        actualizarPanelResultados(lote);
     }
 
     /**

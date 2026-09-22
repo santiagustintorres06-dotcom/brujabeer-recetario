@@ -173,7 +173,7 @@ public class RecipeFormController implements Initializable {
         javafx.scene.control.MenuItem menuBorrar = new javafx.scene.control.MenuItem("Borrar");
         menuBorrar.setOnAction(e -> {
             Receta seleccionada = lstRecetas.getSelectionModel().getSelectedItem();
-            if (seleccionada != null) {
+            if (seleccionada != null && recetaService != null) {
                 Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
                 confirm.setTitle("Confirmar Borrado");
                 confirm.setHeaderText("¿Borrar receta?");

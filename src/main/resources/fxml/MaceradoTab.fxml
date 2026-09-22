@@ -5,27 +5,27 @@
 
 <VBox spacing="10" xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.brujabeer.recetario.ui.controller.MaceradoTabController">
+      fx:controller="com.brujabeer.recetario.ui.controller.MaceradoTabController"
+      styleClass="bb-card">
     <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
 
-    <!-- Tiempo de Recirculado (Vorlauf) — dato único del proceso -->
-    <HBox spacing="12" alignment="CENTER_LEFT"
-          style="-fx-background-color: #f5f0e8; -fx-padding: 8; -fx-background-radius: 4; -fx-border-color: #d4b896; -fx-border-width: 1; -fx-border-radius: 4;">
-        <Label text="⏱ Tiempo de Recirculado (Vorlauf):" style="-fx-font-weight: bold; -fx-font-size: 11px;"/>
+    <!-- Tiempo de Recirculado (Vorlauf) -->
+    <HBox spacing="12" alignment="CENTER_LEFT" styleClass="bb-card">
+        <Label text="⏱ Tiempo de Recirculado (Vorlauf):" styleClass="bb-field-label"/>
         <TextField fx:id="txtTiempoRecirculado" promptText="min" prefWidth="70" style="-fx-alignment: CENTER;"/>
-        <Label text="min" style="-fx-text-fill: #888; -fx-font-size: 11px;"/>
+        <Label text="min" styleClass="bb-info-text"/>
     </HBox>
 
     <Separator/>
 
-    <Label text="Escalones de Macerado:" style="-fx-font-weight: bold; -fx-font-size: 12px;"/>
+    <Label text="Escalones de Macerado:" styleClass="bb-section-title"/>
 
     <HBox spacing="8" alignment="CENTER_LEFT">
         <TextField fx:id="txtNombrePaso" promptText="Ej: Sacarificación" prefWidth="180"/>
         <TextField fx:id="txtTemperatura" promptText="°C" prefWidth="70"/>
         <TextField fx:id="txtDuracion" promptText="min" prefWidth="70"/>
-        <Button text="➕ Agregar" onAction="#agregarPaso" style="-fx-font-size: 11px;"/>
-        <Button text="🗑 Eliminar" onAction="#eliminarPaso" style="-fx-font-size: 11px;"/>
+        <Button text="➕ Agregar" onAction="#agregarPaso" styleClass="bb-btn-primary"/>
+        <Button text="🗑 Eliminar" onAction="#eliminarPaso" styleClass="bb-btn-danger"/>
     </HBox>
 
     <TableView fx:id="tblPasosMacerado" prefHeight="180" VBox.vgrow="ALWAYS">
@@ -37,4 +37,3 @@
         <placeholder><Label text="Sin pasos de macerado"/></placeholder>
     </TableView>
 </VBox>
-

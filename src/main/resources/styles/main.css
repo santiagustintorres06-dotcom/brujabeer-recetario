@@ -1,426 +1,492 @@
-/* ════════════════════════════════════════════════════════════════════════════════
-   BrujaBeer Recetario — Estilos CSS Mejorados
-   Inspirado en BrewerFriends y diseño profesional cervecero
+/* ==========================================================================
+   BRUJA BEER - MAIN STYLESHEET
+   ========================================================================== */
 
-   COLORES PERSONALIZABLES:
-   - Color primario (cervecero): #c97e27 (naranja cervecero de Brewer's Friend-like)
-   - Color secundario: #6b4423 (marrón oscuro)
-   - Color de fondo: #f8f9fa (gris muy claro)
-   - Color texto: #333 (gris oscuro)
-   - Color borde: #e0e0e0 (gris claro)
-
-   PERSONALIZACIÓN: Editar los valores con tus colores preferidos
-   ════════════════════════════════════════════════════════════════════════════════ */
-
+/* --- 1. GLOBAL VARIABLES & THEMES --- */
 .root {
-    /* Paleta de colores (fácil de personalizar) */
-    -bb-primario:     #c97e27;    /* Naranja cervecero */
-    -bb-secundario:   #6b4423;    /* Marrón oscuro */
-    -bb-fondo:        #f8f9fa;    /* Gris muy claro */
-    -bb-borde:        #e0e0e0;    /* Gris claro */
-    -bb-texto:        #333;       /* Gris oscuro */
-    -bb-error:        #ff6b6b;    /* Rojo para errores */
-    -bb-exito:        #51cf66;    /* Verde para éxito */
+    /* Colors - Light Theme */
+    -bb-primary: #c97e27;
+    -bb-primary-hover: #e09236;
+    -bb-secondary: #6b4423;
+    -bb-bg: #f4f5f7;
+    -bb-surface: #ffffff;
+    -bb-text: #212121;
+    -bb-text-muted: #757575;
+    -bb-border: #e0e0e0;
+    -bb-input-bg: #ffffff;
+    -bb-danger: #d32f2f;
+    -bb-danger-hover: #b71c1c;
+    -bb-success: #388e3c;
+    -bb-shadow: rgba(0, 0, 0, 0.08);
 
-    -fx-font-family: "Segoe UI", Arial, sans-serif;
-    -fx-font-size: 11px;
-    -fx-base: #ffffff;
-    -fx-background: #f8f9fa;
-    -fx-control-inner-background: #fafafa;
-    -fx-text-fill: #333;
+    /* Base Font */
+    -fx-font-family: 'Segoe UI Variable', 'Segoe UI', 'Inter', system-ui, sans-serif;
+    -fx-font-size: 12px;
+
+    /* Base Modena Overrides */
+    -fx-base: -bb-bg;
+    -fx-background: -bb-bg;
+    -fx-control-inner-background: -bb-surface;
+    -fx-control-inner-background-alt: -bb-bg;
+    -fx-text-base-color: -bb-text;
+    -fx-text-background-color: -bb-text;
+    -fx-mark-color: -bb-primary;
+    -fx-accent: -bb-primary;
+    -fx-focus-color: -bb-primary;
+    -fx-faint-focus-color: transparent;
+    -fx-light-text-color: #ffffff;
 }
 
-/* ── BOTONES ──────────────────────────────────────────────────────────────────────── */
-.button {
-    -fx-padding: 8 16 8 16;
-    -fx-font-size: 11px;
+.root.dark-mode {
+    /* Colors - Dark Theme */
+    -bb-primary: #c97e27;
+    -bb-primary-hover: #df9845;
+    -bb-secondary: #8b5b31;
+    -bb-bg: #1a1b1e;
+    -bb-surface: #25262b;
+    -bb-text: #e9ecef;
+    -bb-text-muted: #868e96;
+    -bb-border: #3b3c40;
+    -bb-input-bg: #2c2d32;
+    -bb-danger: #f03e3e;
+    -bb-danger-hover: #c92a2a;
+    -bb-success: #40c057;
+    -bb-shadow: rgba(0, 0, 0, 0.3);
+
+    /* Base Modena Overrides for Dark Mode */
+    -fx-base: -bb-bg;
+    -fx-background: -bb-bg;
+    -fx-control-inner-background: -bb-surface;
+    -fx-control-inner-background-alt: -bb-bg;
+    -fx-text-base-color: -bb-text;
+    -fx-text-background-color: -bb-text;
+}
+
+/* ==========================================================================
+   2. SEMANTIC CLASSES (Bruja Beer specific)
+   ========================================================================== */
+
+.bb-card {
+    -fx-background-color: -bb-surface;
+    -fx-background-radius: 8px;
+    -fx-border-color: -bb-border;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-padding: 16px;
+    -fx-effect: dropshadow(gaussian, -bb-shadow, 10, 0, 0, 4);
+}
+
+.bb-header-title {
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
-    -fx-background-color: #f0f0f0;
-    -fx-text-fill: #333;
-    -fx-border-color: #ddd;
-    -fx-border-width: 1;
-    -fx-border-radius: 3;
-    -fx-background-radius: 3;
+    -fx-text-fill: -bb-primary;
+}
+
+.bb-header-subtitle {
+    -fx-font-size: 11px;
+    -fx-text-fill: -bb-text-muted;
+}
+
+.bb-section-title {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -bb-text;
+}
+
+.bb-field-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: -bb-text;
+}
+
+.bb-field-important {
+    -fx-border-color: -bb-primary;
+    -fx-border-width: 2px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.bb-field-success {
+    -fx-border-color: -bb-success;
+    -fx-border-width: 2px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.bb-result-value {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -bb-primary;
+}
+
+.bb-result-label {
+    -fx-font-size: 10px;
+    -fx-text-fill: -bb-text-muted;
+}
+
+/* Buttons */
+.bb-btn-primary {
+    -fx-background-color: -bb-primary;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 16px;
+    -fx-font-weight: bold;
     -fx-cursor: hand;
 }
 
-.button:hover {
-    -fx-background-color: #e0e0e0;
-    -fx-border-color: #bbb;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 1);
+.bb-btn-primary:hover {
+    -fx-background-color: -bb-primary-hover;
 }
 
-.button:pressed {
-    -fx-background-color: #d0d0d0;
+.bb-btn-secondary {
+    -fx-background-color: -bb-bg;
+    -fx-text-fill: -bb-text;
+    -fx-border-color: -bb-border;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
 }
 
-.button:disabled {
-    -fx-opacity: 0.5;
-    -fx-cursor: default;
+.bb-btn-secondary:hover {
+    -fx-background-color: -bb-border;
 }
 
-/* Botón principal (Guardar) */
-.button:default-button {
-    -fx-base: #c97e27;
-    -fx-text-fill: white;
+.bb-btn-danger {
+    -fx-background-color: -bb-danger;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 16px;
     -fx-font-weight: bold;
-    -fx-border-color: #a56622;
+    -fx-cursor: hand;
 }
 
-.button:default-button:hover {
-    -fx-base: #d99239;
-    -fx-effect: dropshadow(gaussian, rgba(201,126,39,0.3), 6, 0, 0, 2);
+.bb-btn-danger:hover {
+    -fx-background-color: -bb-danger-hover;
 }
 
-/* Botón de peligro (Eliminar) */
-.boton-peligro {
-    -fx-background-color: #ff6b6b;
-    -fx-text-fill: white;
-    -fx-border-color: #e55656;
+.bb-theme-toggle {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 4px;
+    -fx-background-radius: 50%;
+}
+.bb-theme-toggle:hover {
+    -fx-background-color: -bb-border;
 }
 
-.boton-peligro:hover {
-    -fx-background-color: #ff5252;
-    -fx-effect: dropshadow(gaussian, rgba(255,107,107,0.3), 6, 0, 0, 2);
-}
-
-/* ── CAMPOS DE TEXTO ──────────────────────────────────────────────────────────────── */
-.text-field,
-.text-area {
-    -fx-padding: 6;
-    -fx-border-color: #ddd;
-    -fx-border-width: 1;
-    -fx-border-radius: 3;
-    -fx-background-color: white;
-    -fx-text-fill: #333;
-    -fx-font-size: 11px;
-}
-
-.text-field:focused,
-.text-area:focused {
-    -fx-border-color: #c97e27;
-    -fx-border-width: 2;
-    -fx-background-color: #fffef5;
-    -fx-effect: dropshadow(gaussian, rgba(201,126,39,0.15), 6, 0, 0, 0);
-}
-
-.text-field:disabled,
-.text-area:disabled {
-    -fx-opacity: 0.6;
-    -fx-background-color: #f0f0f0;
-}
-
-/* Estilo para error en campos */
-.text-field-error {
-    -fx-border-color: #ff6b6b;
-    -fx-border-width: 2;
-}
-
-/* ── COMBOBOX ──────────────────────────────────────────────────────────────────────── */
-.combo-box {
-    -fx-padding: 6;
-    -fx-border-color: #ddd;
-    -fx-border-width: 1;
-    -fx-border-radius: 3;
-    -fx-background-color: white;
-    -fx-font-size: 11px;
-}
-
-.combo-box:focused {
-    -fx-border-color: #c97e27;
-    -fx-border-width: 2;
-    -fx-effect: dropshadow(gaussian, rgba(201,126,39,0.15), 6, 0, 0, 0);
-}
-
-.combo-box:disabled {
-    -fx-opacity: 0.6;
-}
-
-.combo-box-popup .list-view {
-    -fx-background-color: white;
-}
-
-.combo-box-popup .list-view .list-cell {
-    -fx-text-fill: #333;
-}
-
-.combo-box-popup .list-view .list-cell:filled:hover {
-    -fx-background-color: #ffe8d0;
-}
-
-/* ── LABELS ───────────────────────────────────────────────────────────────────────── */
-.label {
-    -fx-text-fill: #333;
-    -fx-font-size: 11px;
-}
-
-.label:bold {
-    -fx-font-weight: bold;
-}
-
-/* Label de resultado (valores calculados) */
-.label-resultado {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #c97e27;
-}
-
-/* Label de sección */
-.label-seccion {
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #6b4423;
-    -fx-padding: 4 0 2 0;
-}
-
-/* ── TABPANE ──────────────────────────────────────────────────────────────────────── */
-.tab-pane {
-    -fx-background-color: #f8f9fa;
-    -fx-padding: 0;
-}
-
-.tab-pane > .tab-header-area > .tab-header-background {
-    -fx-background-color: #f0f0f0;
-}
-
-.tab {
-    -fx-padding: 8 16 8 16;
-    -fx-background-color: #f0f0f0;
-    -fx-text-fill: #666;
-    -fx-font-weight: bold;
-    -fx-border-color: #ddd;
-    -fx-border-width: 0 0 1 0;
-}
-
-.tab:selected {
-    -fx-background-color: white;
-    -fx-text-fill: #c97e27;
-    -fx-border-color: #c97e27;
-    -fx-border-width: 0 0 3 0;
-}
-
-.tab:hover {
-    -fx-background-color: #faf8f5;
-}
-
-/* ── TABLEVIEW ────────────────────────────────────────────────────────────────────── */
-.table-view {
-    -fx-background-color: white;
-    -fx-border-color: #e0e0e0;
-    -fx-border-width: 1;
-}
-
-.table-view .column-header {
-    -fx-background-color: #f0f0f0;
-    -fx-text-fill: #333;
-    -fx-font-weight: bold;
-    -fx-border-color: #ddd;
-    -fx-border-width: 0 1 1 0;
-    -fx-padding: 8;
-}
-
-.table-view .table-row-cell {
-    -fx-padding: 4;
-    -fx-border-color: #f0f0f0;
-    -fx-border-width: 0 0 1 0;
-}
-
-/* Filas alternadas para mejor legibilidad */
-.table-view .table-row-cell:odd {
-    -fx-background-color: #fafafa;
-}
-
-.table-view .table-row-cell:even {
-    -fx-background-color: white;
-}
-
-.table-view .table-row-cell:selected {
-    -fx-background-color: #ffe8d0;
-}
-
-.table-view .table-row-cell:selected .text {
-    -fx-text-fill: #333;
-}
-
-.table-view .table-row-cell:hover {
-    -fx-background-color: #fff5eb;
-}
-
-.table-view .table-cell {
-    -fx-text-fill: #333;
-    -fx-padding: 6;
-}
-
-/* Tabla vacía — mensaje placeholder */
-.table-view .placeholder .label {
-    -fx-text-fill: #999;
+.bb-info-text {
     -fx-font-style: italic;
+    -fx-text-fill: -bb-text-muted;
 }
 
-/* ── LISTVIEW ──────────────────────────────────────────────────────────────────────── */
+/* Layouts */
+.bb-toolbar {
+    -fx-background-color: -bb-surface;
+    -fx-padding: 10px;
+    -fx-border-color: -bb-border;
+    -fx-border-width: 0 0 1px 0;
+    -fx-effect: dropshadow(gaussian, -bb-shadow, 4, 0, 0, 2);
+}
+
+.bb-sidebar {
+    -fx-background-color: -bb-surface;
+    -fx-padding: 12px;
+    -fx-border-color: -bb-border;
+    -fx-border-width: 0 1px 0 0;
+}
+
+.bb-footer {
+    -fx-background-color: -bb-surface;
+    -fx-padding: 10px;
+    -fx-border-color: -bb-border;
+    -fx-border-width: 1px 0 0 0;
+}
+
+/* ==========================================================================
+   3. COMPONENT OVERRIDES
+   ========================================================================== */
+
+/* Standard Buttons */
+.button {
+    -fx-background-color: -bb-surface;
+    -fx-border-color: -bb-border;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-text-fill: -bb-text;
+    -fx-padding: 6px 12px;
+    -fx-cursor: hand;
+}
+.button:hover {
+    -fx-background-color: -bb-bg;
+}
+.button:pressed {
+    -fx-background-color: -bb-border;
+}
+
+/* Text Fields & Areas */
+.text-field, .text-area {
+    -fx-background-color: -bb-input-bg;
+    -fx-border-color: -bb-border;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-text-fill: -bb-text;
+    -fx-padding: 6px 8px;
+    -fx-prompt-text-fill: -bb-text-muted;
+}
+.text-field:focused, .text-area:focused {
+    -fx-border-color: -bb-primary;
+    -fx-effect: dropshadow(gaussian, -bb-primary, 4, 0, 0, 0);
+}
+
+/* Combo Box */
+.combo-box {
+    -fx-background-color: -bb-input-bg;
+    -fx-border-color: -bb-border;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+.combo-box .list-cell {
+    -fx-text-fill: -bb-text;
+}
+.combo-box-popup .list-view {
+    -fx-background-color: -bb-surface;
+    -fx-border-color: -bb-border;
+}
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: -bb-bg;
+}
+.combo-box:focused {
+    -fx-border-color: -bb-primary;
+    -fx-effect: dropshadow(gaussian, -bb-primary, 4, 0, 0, 0);
+}
+
+/* Tab Pane */
+.tab-pane .tab-header-area {
+    -fx-padding: 4px 0 0 0;
+}
+.tab-pane .tab-header-background {
+    -fx-background-color: -bb-surface;
+    -fx-border-color: -bb-border;
+    -fx-border-width: 0 0 1px 0;
+}
+.tab-pane .tab {
+    -fx-background-color: -bb-bg;
+    -fx-background-radius: 6px 6px 0 0;
+    -fx-padding: 6px 16px;
+    -fx-border-color: -bb-border;
+    -fx-border-width: 1px 1px 0 1px;
+}
+.tab-pane .tab:selected {
+    -fx-background-color: -bb-surface;
+    -fx-border-color: -bb-primary;
+    -fx-border-width: 2px 1px 0 1px;
+}
+.tab-pane .tab .tab-label {
+    -fx-text-fill: -bb-text;
+    -fx-font-weight: bold;
+}
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: -bb-primary;
+}
+
+/* Table View */
+.table-view {
+    -fx-background-color: -bb-surface;
+    -fx-border-color: -bb-border;
+    -fx-border-radius: 4px;
+}
+.table-view .column-header-background {
+    -fx-background-color: -bb-bg;
+    -fx-border-color: -bb-border;
+    -fx-border-width: 0 0 1px 0;
+}
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-padding: 8px;
+}
+.table-view .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: -bb-text;
+}
+.table-row-cell {
+    -fx-background-color: -bb-surface;
+    -fx-border-color: -bb-bg;
+    -fx-border-width: 0 0 1px 0;
+    -fx-text-background-color: -bb-text;
+}
+.table-row-cell:odd {
+    -fx-background-color: -bb-bg;
+}
+.table-row-cell:hover {
+    -fx-background-color: rgba(201, 126, 39, 0.1);
+}
+.table-row-cell:selected {
+    -fx-background-color: rgba(201, 126, 39, 0.2);
+}
+.table-row-cell:selected .text {
+    -fx-fill: -bb-text;
+}
+.table-view .placeholder .label {
+    -fx-text-fill: -bb-text-muted;
+    -fx-font-size: 14px;
+}
+
+/* List View */
 .list-view {
-    -fx-background-color: #fafafa;
-    -fx-border-color: #ddd;
-    -fx-border-width: 1;
-    -fx-border-radius: 3;
+    -fx-background-color: -bb-surface;
+    -fx-border-color: -bb-border;
+    -fx-border-radius: 4px;
 }
-
 .list-cell {
-    -fx-text-fill: #333;
-    -fx-padding: 6;
-    -fx-border-color: transparent;
-    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+    -fx-text-fill: -bb-text;
+    -fx-padding: 8px;
+}
+.list-cell:odd {
+    -fx-background-color: -bb-bg;
+}
+.list-cell:hover {
+    -fx-background-color: rgba(201, 126, 39, 0.1);
+}
+.list-cell:selected {
+    -fx-background-color: rgba(201, 126, 39, 0.2);
+    -fx-text-fill: -bb-text;
 }
 
-.list-cell:filled:hover {
-    -fx-background-color: #ffe8d0;
+/* Tree View */
+.tree-view {
+    -fx-background-color: -bb-surface;
+    -fx-border-color: -bb-border;
+    -fx-border-radius: 4px;
+}
+.tree-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -bb-text;
+    -fx-padding: 4px;
+}
+.tree-cell:hover {
+    -fx-background-color: rgba(201, 126, 39, 0.1);
+}
+.tree-cell:selected {
+    -fx-background-color: rgba(201, 126, 39, 0.2);
 }
 
-.list-cell:filled:selected {
-    -fx-background-color: #c97e27;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-}
-
-/* ── DATEPICKER ──────────────────────────────────────────────────────────────────── */
-.date-picker {
-    -fx-border-color: #ddd;
-    -fx-border-width: 1;
-    -fx-border-radius: 3;
-    -fx-background-color: white;
-}
-
-.date-picker:focused {
-    -fx-border-color: #c97e27;
-    -fx-border-width: 2;
-}
-
-/* ── MENUBAR y MENUS ──────────────────────────────────────────────────────────────── */
-.menu-bar {
-    -fx-background-color: white;
-    -fx-border-color: #e0e0e0;
-    -fx-border-width: 0 0 1 0;
-}
-
-.menu-button {
-    -fx-padding: 6 12 6 12;
-    -fx-font-size: 11px;
-    -fx-text-fill: #333;
-}
-
-.menu-button:hover {
-    -fx-background-color: #f0f0f0;
-}
-
-.context-menu {
-    -fx-background-color: white;
-    -fx-border-color: #ddd;
-}
-
-.menu-item:focused {
-    -fx-background-color: #ffe8d0;
-}
-
-/* ── TOOLBAR ──────────────────────────────────────────────────────────────────────── */
-.tool-bar {
-    -fx-background-color: #f8f9fa;
-    -fx-border-color: #e0e0e0;
-    -fx-border-width: 0 0 1 0;
-    -fx-padding: 8 12 8 12;
-}
-
-/* ── TITLED PANE (secciones colapsables) ─────────────────────────────────────────── */
-.titled-pane > .title {
-    -fx-background-color: #f0f0f0;
-    -fx-text-fill: #6b4423;
-    -fx-font-weight: bold;
-    -fx-padding: 8 12 8 12;
-    -fx-border-color: #ddd;
-    -fx-border-width: 0 0 1 0;
-}
-
-.titled-pane > .content {
-    -fx-background-color: white;
-    -fx-padding: 12;
-    -fx-border-color: #e0e0e0;
-    -fx-border-width: 0 1 1 1;
-}
-
-/* ── SEPARATOR ────────────────────────────────────────────────────────────────────── */
-.separator {
-    -fx-padding: 0;
-}
-
-.separator:vertical {
-    -fx-border-color: #ddd;
-    -fx-border-width: 1 0 0 0;
-}
-
-.separator:horizontal {
-    -fx-border-color: #ddd;
-    -fx-border-width: 0 0 0 1;
-}
-
-/* ── SCROLL BARS ──────────────────────────────────────────────────────────────────── */
+/* Scroll Bar */
 .scroll-bar {
-    -fx-background-color: #f0f0f0;
+    -fx-background-color: transparent;
+}
+.scroll-bar .track {
+    -fx-background-color: -bb-bg;
+    -fx-border-color: -bb-border;
+}
+.scroll-bar .thumb {
+    -fx-background-color: -bb-border;
+    -fx-background-radius: 4px;
+}
+.scroll-bar .thumb:hover {
+    -fx-background-color: -bb-text-muted;
+}
+.scroll-bar .increment-button, .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 4px;
 }
 
-.scroll-bar .increment-button,
-.scroll-bar .decrement-button {
-    -fx-background-color: #f0f0f0;
-}
-
-.scroll-bar:vertical .thumb {
-    -fx-background-color: #c0c0c0;
-    -fx-background-radius: 3;
-}
-
-.scroll-bar:vertical .thumb:hover {
-    -fx-background-color: #a0a0a0;
-}
-
-/* ── TOOLTIP ──────────────────────────────────────────────────────────────────────── */
-.tooltip {
-    -fx-background-color: #333;
-    -fx-text-fill: white;
-    -fx-font-size: 11px;
-    -fx-padding: 6 10 6 10;
-    -fx-background-radius: 4;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
-}
-
-/* ── PROGRESS BAR ────────────────────────────────────────────────────────────────── */
-.progress-bar > .track {
-    -fx-background-color: #e0e0e0;
-    -fx-background-radius: 3;
-}
-
-.progress-bar > .bar {
-    -fx-background-color: #c97e27;
-    -fx-background-radius: 3;
-}
-
-/* ── ALERT / DIALOG ──────────────────────────────────────────────────────────────── */
+/* Dialog Pane */
 .dialog-pane {
-    -fx-background-color: white;
+    -fx-background-color: -bb-surface;
+    -fx-padding: 16px;
+}
+.dialog-pane .header-panel {
+    -fx-background-color: -bb-surface;
+}
+.dialog-pane .label {
+    -fx-text-fill: -bb-text;
 }
 
-.dialog-pane > .button-bar > .container {
-    -fx-padding: 12;
+/* Tooltip */
+.tooltip {
+    -fx-background-color: -bb-surface;
+    -fx-text-fill: -bb-text;
+    -fx-border-color: -bb-border;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 4px 8px;
+    -fx-effect: dropshadow(gaussian, -bb-shadow, 4, 0, 0, 2);
 }
 
-/* ════════════════════════════════════════════════════════════════════════════════
-   PERSONALIZACIÓN FÁCIL: Reemplazar estos valores en el CSS
+/* Titled Pane */
+.titled-pane > .title {
+    -fx-background-color: -bb-bg;
+    -fx-border-color: -bb-border;
+    -fx-padding: 8px;
+    -fx-font-weight: bold;
+}
+.titled-pane > .title > .text {
+    -fx-fill: -bb-text;
+}
+.titled-pane > .content {
+    -fx-background-color: -bb-surface;
+    -fx-border-color: -bb-border;
+    -fx-border-width: 0 1px 1px 1px;
+    -fx-padding: 12px;
+}
 
-   #c97e27 → Tu color primario cervecero
-   #6b4423 → Tu color secundario oscuro
-   #f8f9fa → Tu color de fondo
-   #ddd    → Tu color de borde
+/* Slider */
+.slider .track {
+    -fx-background-color: -bb-border;
+    -fx-background-radius: 4px;
+}
+.slider .thumb {
+    -fx-background-color: -bb-primary;
+    -fx-background-radius: 50%;
+}
+.slider .thumb:hover {
+    -fx-background-color: -bb-primary-hover;
+}
 
-   Ejemplos tipo BrewerFriends-like:
-   - Azul profesional: #0066cc
-   - Verde cervecero: #2d5016
-   - Naranja artesanal: #ff6633
-   - Marrón claro: #d4860a
-   ════════════════════════════════════════════════════════════════════════════════ */
+/* Separator */
+.separator .line {
+    -fx-border-color: -bb-border;
+    -fx-border-width: 1px 0 0 0;
+}
+
+/* Tool Bar */
+.tool-bar {
+    -fx-background-color: -bb-surface;
+    -fx-border-color: -bb-border;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 8px;
+}
+
+/* Menu Bar & Items */
+.menu-bar {
+    -fx-background-color: -bb-surface;
+    -fx-border-color: -bb-border;
+    -fx-border-width: 0 0 1px 0;
+}
+.menu-bar .label {
+    -fx-text-fill: -bb-text;
+}
+.menu:hover {
+    -fx-background-color: -bb-bg;
+}
+.menu-item {
+    -fx-background-color: transparent;
+}
+.menu-item .label {
+    -fx-text-fill: -bb-text;
+}
+.menu-item:hover {
+    -fx-background-color: rgba(201, 126, 39, 0.1);
+}
+.context-menu {
+    -fx-background-color: -bb-surface;
+    -fx-border-color: -bb-border;
+    -fx-border-radius: 4px;
+    -fx-effect: dropshadow(gaussian, -bb-shadow, 6, 0, 0, 3);
+}
+
+/* Extra Global Labels */
+.label {
+    -fx-text-fill: -bb-text;
+}

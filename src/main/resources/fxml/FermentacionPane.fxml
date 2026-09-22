@@ -11,8 +11,7 @@
     <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
 
     <!-- ═══ SECCIÓN 1: Fermentación Primaria ═══════════════════════════════ -->
-    <TitledPane text="🧬 Fermentación Primaria" expanded="true" collapsible="true"
-                style="-fx-font-weight: bold; -fx-font-size: 12px;">
+    <TitledPane text="🧬 Fermentación Primaria" expanded="true" collapsible="true">
         <VBox spacing="8">
             <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
 
@@ -25,27 +24,25 @@
                 </columnConstraints>
 
                 <Label text="Días fermentación:" GridPane.columnIndex="0" GridPane.rowIndex="0"
-                       style="-fx-font-size: 11px;"/>
+                       styleClass="bb-field-label"/>
                 <TextField fx:id="txtDiasFermentacion" promptText="14"
                            GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
                 <Label text="Temperatura:" GridPane.columnIndex="2" GridPane.rowIndex="0"
-                       style="-fx-font-size: 11px;"/>
+                       styleClass="bb-field-label"/>
                 <TextField fx:id="txtTempFermentacion" promptText="18 °C"
                            GridPane.columnIndex="3" GridPane.rowIndex="0"/>
 
                 <Label text="FG Estimada:" GridPane.columnIndex="0" GridPane.rowIndex="1"
-                       style="-fx-font-size: 11px;"/>
-                <Label fx:id="lblFgEstimada" text="—"
-                       style="-fx-font-weight: bold; -fx-text-fill: #c97e27; -fx-font-size: 14px;"
+                       styleClass="bb-field-label"/>
+                <Label fx:id="lblFgEstimada" text="—" styleClass="bb-result-value"
                        GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.columnSpan="3"/>
             </GridPane>
         </VBox>
     </TitledPane>
 
     <!-- ═══ SECCIÓN 1.5: Maduración (Cold Crash) ═══════════════════════════ -->
-    <TitledPane text="❄️ Maduración en Frío (Cold Crash)" expanded="true" collapsible="true"
-                style="-fx-font-weight: bold; -fx-font-size: 12px;">
+    <TitledPane text="❄️ Maduración en Frío (Cold Crash)" expanded="true" collapsible="true">
         <VBox spacing="8">
             <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
 
@@ -58,12 +55,12 @@
                 </columnConstraints>
 
                 <Label text="Días maduración:" GridPane.columnIndex="0" GridPane.rowIndex="0"
-                       style="-fx-font-size: 11px;"/>
+                       styleClass="bb-field-label"/>
                 <TextField fx:id="txtDiasMaduracion" promptText="5"
                            GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
                 <Label text="Temperatura:" GridPane.columnIndex="2" GridPane.rowIndex="0"
-                       style="-fx-font-size: 11px;"/>
+                       styleClass="bb-field-label"/>
                 <TextField fx:id="txtTempMaduracion" promptText="0 °C"
                            GridPane.columnIndex="3" GridPane.rowIndex="0"/>
             </GridPane>
@@ -71,35 +68,31 @@
     </TitledPane>
 
     <!-- ═══ SECCIÓN 2: Carbonatación ═══════════════════════════════════════ -->
-    <TitledPane text="🍾 Carbonatación" expanded="true" collapsible="true"
-                style="-fx-font-weight: bold; -fx-font-size: 12px;">
+    <TitledPane text="🍾 Carbonatación" expanded="true" collapsible="true">
         <VBox spacing="10">
             <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
 
             <!-- Slider de Volúmenes CO2 -->
             <HBox spacing="8" alignment="CENTER_LEFT">
-                <Label text="Volúmenes CO₂:" style="-fx-font-size: 11px; -fx-font-weight: bold;" prefWidth="120"/>
+                <Label text="Volúmenes CO₂:" styleClass="bb-field-label" prefWidth="120"/>
                 <Slider fx:id="sldVolumenesCO2"
                         min="1.0" max="4.5" value="2.4" blockIncrement="0.1"
                         majorTickUnit="1.0" minorTickCount="9"
                         showTickLabels="true" showTickMarks="true"
                         snapToTicks="false"
                         prefWidth="300"/>
-                <Label fx:id="lblVolumenesCO2Valor" text="2.4 vol"
-                       style="-fx-font-weight: bold; -fx-text-fill: #c97e27; -fx-font-size: 13px;" prefWidth="65"/>
+                <Label fx:id="lblVolumenesCO2Valor" text="2.4 vol" styleClass="bb-result-value" prefWidth="65"/>
             </HBox>
 
             <!-- Referencia de estilos -->
             <Label text="[ Ales: 2.0–2.5 · Lagers: 2.5–3.0 · Belgas/Trigo: 3.0–4.5 ]"
-                   style="-fx-font-size: 10px; -fx-text-fill: #888; -fx-font-style: italic;"/>
+                   styleClass="bb-info-text"/>
 
             <!-- Resultado del priming -->
-            <HBox spacing="10" alignment="CENTER_LEFT"
-                  style="-fx-background-color: #f0ebe0; -fx-padding: 10; -fx-background-radius: 6; -fx-border-color: #d4b896; -fx-border-width: 1; -fx-border-radius: 6;">
-                <Label text="🧪 Dextrosa para priming:"
-                       style="-fx-font-weight: bold; -fx-font-size: 12px;"/>
-                <Label fx:id="lblPrimingResultado" text="— g"
-                       style="-fx-font-weight: bold; -fx-text-fill: #c97e27; -fx-font-size: 16px;"/>
+            <HBox spacing="10" alignment="CENTER_LEFT" styleClass="bb-card">
+                <Label text="🧪 Dextrosa para priming:" styleClass="bb-field-label"/>
+                <Label fx:id="lblPrimingResultado" text="— g" styleClass="bb-result-value"
+                       style="-fx-font-size: 16px;"/>
             </HBox>
         </VBox>
     </TitledPane>

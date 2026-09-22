@@ -24,28 +24,20 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Font?>
 
 <!--
-  BrujaBeer RecipeForm.fxml — UI mejorada inspirada en BrewerFriends
-
-  PERSONALIZACIÓN:
-  - Colores: Editar en el archivo src/main/resources/styles/main.css
-  - Layout: Editar este FXML directamente
-  - Espaciados: Aumentar/disminuir valores de <padding> e <Insets>
-
+  BrujaBeer RecipeForm.fxml — UI Rediseñada V1.2
   CONTROLADOR: com.brujabeer.recetario.ui.controller.RecipeFormController
 -->
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.brujabeer.recetario.ui.controller.RecipeFormController"
-            style="-fx-font-family: 'Segoe UI', Arial, sans-serif;">
+            fx:controller="com.brujabeer.recetario.ui.controller.RecipeFormController">
     <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
 
     <!-- CABECERA: Menú + Toolbar -->
     <top>
-        <VBox spacing="0" style="-fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
-            <MenuBar style="-fx-font-size: 11;">
+        <VBox spacing="0">
+            <MenuBar>
                 <menus>
                     <Menu text="📋 Receta">
                         <items>
@@ -62,7 +54,7 @@
                     </Menu>
                 </menus>
             </MenuBar>
-            <ToolBar style="-fx-padding: 8; -fx-background-color: #f8f9fa;">
+            <ToolBar styleClass="bb-toolbar">
                 <HBox spacing="10" alignment="CENTER_LEFT">
                     <ImageView fitHeight="40" preserveRatio="true">
                         <image>
@@ -70,10 +62,8 @@
                         </image>
                     </ImageView>
                     <VBox spacing="2">
-                        <Label text="🍺 BrujaBeer Recetario"
-                               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
-                        <Label text="v1.1 | Editor de Recetas Cerveceras"
-                               style="-fx-font-size: 11px; -fx-text-fill: #666;" />
+                        <Label text="🍺 BrujaBeer Recetario" styleClass="bb-header-title" />
+                        <Label text="v1.2 | Editor de Recetas Cerveceras" styleClass="bb-header-subtitle" />
                     </VBox>
                 </HBox>
             </ToolBar>
@@ -82,22 +72,19 @@
 
     <!-- LADO IZQUIERDO: Lista de recetas guardadas -->
     <left>
-        <VBox spacing="8" prefWidth="280" style="-fx-border-color: #e0e0e0; -fx-border-width: 0 1 0 0; -fx-padding: 12;">
-            <Label text="📚 Recetas Guardadas"
-                   style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #333;" />
-            <ListView fx:id="lstRecetas" prefHeight="400"
-                      style="-fx-control-inner-background: #fafafa; -fx-padding: 4;" />
+        <VBox spacing="8" prefWidth="280" styleClass="bb-sidebar">
+            <Label text="📚 Recetas Guardadas" styleClass="bb-section-title" />
+            <ListView fx:id="lstRecetas" prefHeight="400" />
         </VBox>
     </left>
 
-    <!-- CENTRO: Formulario principal (encabezado + pestañas + cálculos) -->
+    <!-- CENTRO: Formulario principal -->
     <center>
-        <VBox spacing="12" style="-fx-padding: 0;">
+        <VBox spacing="12">
 
-            <!-- SECCIÓN 1: Datos generales de la receta -->
-            <VBox spacing="8" style="-fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-padding: 12; -fx-background-color: #fafafa;">
-                <Label text="📝 Información de la Receta"
-                       style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #333;" />
+            <!-- SECCIÓN 1: Datos generales -->
+            <VBox spacing="8" styleClass="bb-card">
+                <Label text="📝 Información de la Receta" styleClass="bb-section-title" />
 
                 <GridPane hgap="12" vgap="8">
                     <columnConstraints>
@@ -113,50 +100,50 @@
                         <RowConstraints minHeight="60" />
                     </rowConstraints>
 
-                    <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-weight: bold;" />
+                    <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="bb-field-label" />
                     <TextField fx:id="txtNombre" GridPane.rowIndex="0" GridPane.columnIndex="1"
-                               promptText="Ej: IPA Argentina" style="-fx-padding: 6; -fx-font-size: 11;" />
+                               promptText="Ej: IPA Argentina" />
 
-                    <Label text="Estilo:" GridPane.rowIndex="0" GridPane.columnIndex="2" style="-fx-font-weight: bold;" />
+                    <Label text="Estilo:" GridPane.rowIndex="0" GridPane.columnIndex="2" styleClass="bb-field-label" />
                     <ComboBox fx:id="cbEstilo" GridPane.rowIndex="0" GridPane.columnIndex="3"
                               editable="true" promptText="Seleccionar o escribir estilo..."
-                              prefWidth="200" style="-fx-padding: 4; -fx-font-size: 11;" />
+                              prefWidth="200" />
 
-                    <Label text="Volumen (L):" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-weight: bold;" />
+                    <Label text="Volumen (L):" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="bb-field-label" />
                     <TextField fx:id="txtVolumenLitros" GridPane.rowIndex="1" GridPane.columnIndex="1"
-                               promptText="20" style="-fx-padding: 6; -fx-font-size: 11;" />
+                               promptText="20" />
 
-                    <Label text="Equipo:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-weight: bold;" />
+                    <Label text="Equipo:" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="bb-field-label" />
                     <ComboBox fx:id="cbEquipo" GridPane.rowIndex="2" GridPane.columnIndex="1"
-                              prefWidth="200" promptText="Seleccionar equipo..." style="-fx-padding: 4; -fx-font-size: 11;" />
+                              prefWidth="200" promptText="Seleccionar equipo..." />
 
-                    <Label text="Perfil Agua:" GridPane.rowIndex="2" GridPane.columnIndex="2" style="-fx-font-weight: bold;" />
+                    <Label text="Perfil Agua:" GridPane.rowIndex="2" GridPane.columnIndex="2" styleClass="bb-field-label" />
                     <ComboBox fx:id="cbAguaPerfil" GridPane.rowIndex="2" GridPane.columnIndex="3"
-                              prefWidth="200" promptText="Seleccionar agua..." style="-fx-padding: 4; -fx-font-size: 11;" />
+                              prefWidth="200" promptText="Seleccionar agua..." />
 
-                    <Label text="Descripción:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-weight: bold; -fx-alignment: TOP_LEFT;" />
+                    <Label text="Descripción:" GridPane.rowIndex="3" GridPane.columnIndex="0"
+                           styleClass="bb-field-label" style="-fx-alignment: TOP_LEFT;" />
                     <TextArea fx:id="txaDescripcion" prefRowCount="3" GridPane.rowIndex="3" GridPane.columnIndex="1"
-                              GridPane.columnSpan="3" wrapText="true" style="-fx-padding: 6; -fx-font-size: 11;" />
+                              GridPane.columnSpan="3" wrapText="true" />
                 </GridPane>
             </VBox>
 
-            <!-- SECCIÓN 2: Maltas, Lúpulos y Levaduras (Pestañas) -->
-            <TabPane style="-fx-font-size: 11px;">
+            <!-- SECCIÓN 2: Ingredientes (Pestañas) -->
+            <TabPane>
                 <tabs>
-
                     <!-- TAB 1: MALTAS -->
                     <Tab text="🌾 Maltas" closable="false">
-                        <VBox spacing="10" style="-fx-padding: 12;">
-                            <Label text="Agregar Malta:" style="-fx-font-weight: bold; -fx-font-size: 11px;" />
+                        <VBox spacing="10" styleClass="bb-card">
+                            <Label text="Agregar Malta:" styleClass="bb-field-label" />
                             <HBox spacing="8">
                                 <ComboBox fx:id="cbMaltaSeleccionada" prefWidth="250"
-                                         promptText="Seleccionar malta..." style="-fx-padding: 4;" />
+                                         promptText="Seleccionar malta..." />
                                 <TextField fx:id="txtCantidadMalta" prefWidth="80"
-                                          promptText="g" style="-fx-padding: 4; -fx-alignment: CENTER;" />
+                                          promptText="g" style="-fx-alignment: CENTER;" />
                                 <Button fx:id="btnAgregarMalta" text="➕ Agregar" onAction="#agregarMalta"
-                                       style="-fx-padding: 6 16 6 16; -fx-font-weight: bold;" />
+                                       styleClass="bb-btn-primary" />
                                 <Button fx:id="btnEliminarMalta" text="🗑 Eliminar" onAction="#eliminarMalta"
-                                       style="-fx-padding: 6 16 6 16;" />
+                                       styleClass="bb-btn-danger" />
                             </HBox>
                             <TableView fx:id="tblMaltas" prefHeight="180">
                                 <columns>
@@ -168,27 +155,27 @@
                         </VBox>
                     </Tab>
 
-                    <!-- TAB 2: MACERADO (delegado a sub-controller) -->
+                    <!-- TAB 2: MACERADO -->
                     <Tab text="🔥 Macerado" closable="false">
                         <fx:include source="MaceradoTab.fxml" fx:id="maceradoTab"/>
                     </Tab>
 
                     <!-- TAB 3: LÚPULOS -->
                     <Tab text="🌿 Lúpulos" closable="false">
-                        <VBox spacing="10" style="-fx-padding: 12;">
-                            <Label text="Agregar Lúpulo:" style="-fx-font-weight: bold; -fx-font-size: 11px;" />
+                        <VBox spacing="10" styleClass="bb-card">
+                            <Label text="Agregar Lúpulo:" styleClass="bb-field-label" />
                             <HBox spacing="6">
                                 <ComboBox fx:id="cbLupuloSeleccionado" prefWidth="200"
-                                         promptText="Seleccionar lúpulo..." style="-fx-padding: 4;" />
+                                         promptText="Seleccionar lúpulo..." />
                                 <TextField fx:id="txtCantidadLupulo" prefWidth="70"
-                                          promptText="g" style="-fx-padding: 4; -fx-alignment: CENTER;" />
+                                          promptText="g" style="-fx-alignment: CENTER;" />
                                 <TextField fx:id="txtTiempoLupulo" prefWidth="70"
-                                          promptText="min" style="-fx-padding: 4; -fx-alignment: CENTER;" />
-                                <ComboBox fx:id="cbUsoLupulo" prefWidth="120" style="-fx-padding: 4;" />
+                                          promptText="min" style="-fx-alignment: CENTER;" />
+                                <ComboBox fx:id="cbUsoLupulo" prefWidth="120" />
                                 <Button fx:id="btnAgregarLupulo" text="➕ Agregar" onAction="#agregarLupulo"
-                                       style="-fx-padding: 6 16 6 16; -fx-font-weight: bold;" />
+                                       styleClass="bb-btn-primary" />
                                 <Button fx:id="btnEliminarLupulo" text="🗑 Eliminar" onAction="#eliminarLupulo"
-                                       style="-fx-padding: 6 16 6 16;" />
+                                       styleClass="bb-btn-danger" />
                             </HBox>
                             <TableView fx:id="tblLupulos" prefHeight="180">
                                 <columns>
@@ -201,23 +188,23 @@
                         </VBox>
                     </Tab>
 
-                    <!-- TAB 3.5: OTROS INGREDIENTES (MISCELÁNEOS) -->
+                    <!-- TAB 3.5: MISCELÁNEOS -->
                     <Tab text="🧪 Otros Ingredientes" closable="false">
-                        <VBox spacing="10" style="-fx-padding: 12;">
-                            <Label text="Agregar Ingrediente:" style="-fx-font-weight: bold; -fx-font-size: 11px;" />
+                        <VBox spacing="10" styleClass="bb-card">
+                            <Label text="Agregar Ingrediente:" styleClass="bb-field-label" />
                             <HBox spacing="6">
                                 <TextField fx:id="txtNombreMiscelaneo" prefWidth="180"
-                                          promptText="Ej: Irish Moss" style="-fx-padding: 4;" />
+                                          promptText="Ej: Irish Moss" />
                                 <TextField fx:id="txtCantidadMiscelaneo" prefWidth="60"
-                                          promptText="Cant" style="-fx-padding: 4; -fx-alignment: CENTER;" />
+                                          promptText="Cant" style="-fx-alignment: CENTER;" />
                                 <TextField fx:id="txtUsoMiscelaneo" prefWidth="100"
-                                          promptText="Hervor, etc." style="-fx-padding: 4;" />
+                                          promptText="Hervor, etc." />
                                 <TextField fx:id="txtTiempoMiscelaneo" prefWidth="60"
-                                          promptText="min" style="-fx-padding: 4; -fx-alignment: CENTER;" />
+                                          promptText="min" style="-fx-alignment: CENTER;" />
                                 <Button fx:id="btnAgregarMiscelaneo" text="➕ Agregar" onAction="#agregarMiscelaneo"
-                                       style="-fx-padding: 6 16 6 16; -fx-font-weight: bold;" />
+                                       styleClass="bb-btn-primary" />
                                 <Button fx:id="btnEliminarMiscelaneo" text="🗑 Eliminar" onAction="#eliminarMiscelaneo"
-                                       style="-fx-padding: 6 16 6 16;" />
+                                       styleClass="bb-btn-danger" />
                             </HBox>
                             <TableView fx:id="tblMiscelaneos" prefHeight="180">
                                 <columns>
@@ -232,19 +219,19 @@
 
                     <!-- TAB 4: LEVADURAS -->
                     <Tab text="🧬 Levaduras" closable="false">
-                        <VBox spacing="10" style="-fx-padding: 12;">
-                            <Label text="Agregar Levadura:" style="-fx-font-weight: bold; -fx-font-size: 11px;" />
+                        <VBox spacing="10" styleClass="bb-card">
+                            <Label text="Agregar Levadura:" styleClass="bb-field-label" />
                             <HBox spacing="8">
                                 <ComboBox fx:id="cbLevaduraSeleccionada" prefWidth="220"
-                                         promptText="Seleccionar levadura..." style="-fx-padding: 4;" />
+                                         promptText="Seleccionar levadura..." />
                                 <ComboBox fx:id="cbFormatoLevadura" prefWidth="100"
-                                         promptText="Formato" style="-fx-padding: 4;" />
+                                         promptText="Formato" />
                                 <TextField fx:id="txtCantidadLevadura" prefWidth="70"
-                                          promptText="g" style="-fx-padding: 4; -fx-alignment: CENTER;" />
+                                          promptText="g" style="-fx-alignment: CENTER;" />
                                 <Button fx:id="btnAgregarLevadura" text="➕ Agregar" onAction="#agregarLevadura"
-                                       style="-fx-padding: 6 16 6 16; -fx-font-weight: bold;" />
+                                       styleClass="bb-btn-primary" />
                                 <Button fx:id="btnEliminarLevadura" text="🗑 Eliminar" onAction="#eliminarLevadura"
-                                       style="-fx-padding: 6 16 6 16;" />
+                                       styleClass="bb-btn-danger" />
                             </HBox>
                             <TableView fx:id="tblLevaduras" prefHeight="180">
                                 <columns>
@@ -256,7 +243,7 @@
                         </VBox>
                     </Tab>
 
-                    <!-- TAB 5: FERMENTACIÓN Y CARBONATACIÓN (delegado a sub-controller) -->
+                    <!-- TAB 5: FERMENTACIÓN -->
                     <Tab text="🍾 Fermentación" closable="false">
                         <fx:include source="FermentacionPane.fxml" fx:id="fermentacionPane"/>
                     </Tab>
@@ -264,35 +251,34 @@
                 </tabs>
             </TabPane>
 
-            <!-- SECCIÓN 3: Parámetros calculados (OG, IBU, ABV, Color) -->
-            <HBox spacing="20" alignment="CENTER_LEFT"
-                  style="-fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-padding: 12; -fx-background-color: #fafafa;">
-                <Label text="📊 Parámetros Calculados:" style="-fx-font-weight: bold;" />
+            <!-- SECCIÓN 3: Parámetros calculados -->
+            <HBox spacing="20" alignment="CENTER_LEFT" styleClass="bb-card">
+                <Label text="📊 Parámetros Calculados:" styleClass="bb-field-label" />
                 <Separator />
 
                 <VBox spacing="2" alignment="CENTER">
-                    <Label text="OG" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
-                    <Label fx:id="lblOgEstimada" text="—" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                    <Label text="OG" styleClass="bb-result-label" />
+                    <Label fx:id="lblOgEstimada" text="—" styleClass="bb-result-value" />
                 </VBox>
 
                 <VBox spacing="2" alignment="CENTER">
-                    <Label text="FG" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
-                    <Label fx:id="lblFgEstimada" text="—" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                    <Label text="FG" styleClass="bb-result-label" />
+                    <Label fx:id="lblFgEstimada" text="—" styleClass="bb-result-value" />
                 </VBox>
 
                 <VBox spacing="2" alignment="CENTER">
-                    <Label text="IBU" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
-                    <Label fx:id="lblIbuEstimado" text="—" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                    <Label text="IBU" styleClass="bb-result-label" />
+                    <Label fx:id="lblIbuEstimado" text="—" styleClass="bb-result-value" />
                 </VBox>
 
                 <VBox spacing="2" alignment="CENTER">
-                    <Label text="ABV (%)" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
-                    <Label fx:id="lblAbvEstimado" text="—" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                    <Label text="ABV (%)" styleClass="bb-result-label" />
+                    <Label fx:id="lblAbvEstimado" text="—" styleClass="bb-result-value" />
                 </VBox>
 
                 <VBox spacing="2" alignment="CENTER">
-                    <Label text="Color" style="-fx-font-size: 10px; -fx-text-fill: #999;" />
-                    <Label fx:id="lblColorEbc" text="—" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
+                    <Label text="Color" styleClass="bb-result-label" />
+                    <Label fx:id="lblColorEbc" text="—" styleClass="bb-result-value" />
                 </VBox>
             </HBox>
 
@@ -301,12 +287,10 @@
 
     <!-- PIE: Botones de acción principales -->
     <bottom>
-        <HBox spacing="10" alignment="CENTER_RIGHT"
-              style="-fx-border-color: #e0e0e0; -fx-border-width: 1 0 0 0; -fx-padding: 12; -fx-background-color: #f8f9fa;">
-            <Button text="🔄 Limpiar" onAction="#limpiarFormulario"
-                   style="-fx-padding: 8 16 8 16; -fx-font-size: 11px;" />
+        <HBox spacing="10" alignment="CENTER_RIGHT" styleClass="bb-footer">
+            <Button text="🔄 Limpiar" onAction="#limpiarFormulario" styleClass="bb-btn-secondary" />
             <Button fx:id="btnGuardarReceta" text="💾 Guardar Receta" onAction="#guardarReceta"
-                   style="-fx-padding: 8 16 8 16; -fx-font-size: 11px; -fx-font-weight: bold; -fx-background-color: #c97e27; -fx-text-fill: #ffffff; -fx-background-radius: 4px;" />
+                   styleClass="bb-btn-primary" />
         </HBox>
     </bottom>
 

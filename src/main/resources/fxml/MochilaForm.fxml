@@ -6,23 +6,18 @@
 <?import javafx.scene.layout.*?>
 
 <!--
-  BrujaBeer MochilaForm.fxml — Gestor de Documentos y PDFs de Producción
-
-  Permite al cervecero subir, organizar por carpetas y consultar manuales,
-  fichas técnicas, POEs y documentación operativa.
-
+  BrujaBeer MochilaForm.fxml — Gestor de Documentos V1.2
   CONTROLADOR: com.brujabeer.recetario.ui.controller.MochilaFormController
 -->
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.brujabeer.recetario.ui.controller.MochilaFormController"
-            style="-fx-font-family: 'Segoe UI', Arial, sans-serif;">
+            fx:controller="com.brujabeer.recetario.ui.controller.MochilaFormController">
     <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
 
-    <!-- CABECERA: Toolbar con Logo e Información del Módulo -->
+    <!-- CABECERA -->
     <top>
-        <VBox spacing="0" style="-fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
-            <ToolBar style="-fx-padding: 8; -fx-background-color: #f8f9fa;">
+        <VBox spacing="0">
+            <ToolBar styleClass="bb-toolbar">
                 <HBox spacing="10" alignment="CENTER_LEFT">
                     <ImageView fitHeight="40" preserveRatio="true">
                         <image>
@@ -30,10 +25,8 @@
                         </image>
                     </ImageView>
                     <VBox spacing="2">
-                        <Label text="🎒 BrujaBeer — Mochila de Producción"
-                               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
-                        <Label text="v1.1 | Gestión de Manuales, Fichas Técnicas y Protocolos PDF"
-                               style="-fx-font-size: 11px; -fx-text-fill: #666;" />
+                        <Label text="🎒 BrujaBeer — Mochila de Producción" styleClass="bb-header-title" />
+                        <Label text="v1.2 | Gestión de Manuales, Fichas Técnicas y Protocolos PDF" styleClass="bb-header-subtitle" />
                     </VBox>
                 </HBox>
             </ToolBar>
@@ -42,19 +35,14 @@
 
     <!-- LADO IZQUIERDO: Árbol de Carpetas -->
     <left>
-        <VBox spacing="10" prefWidth="280"
-              style="-fx-border-color: #e0e0e0; -fx-border-width: 0 1 0 0; -fx-padding: 12;">
-            <Label text="📁 Carpetas de Mochila"
-                   style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #333;" />
+        <VBox spacing="10" prefWidth="280" styleClass="bb-sidebar">
+            <Label text="📁 Carpetas de Mochila" styleClass="bb-section-title" />
 
-            <TreeView fx:id="treeCarpetas" VBox.vgrow="ALWAYS"
-                      style="-fx-control-inner-background: #fafafa; -fx-padding: 4;" />
+            <TreeView fx:id="treeCarpetas" VBox.vgrow="ALWAYS" />
 
             <HBox spacing="8" alignment="CENTER">
-                <Button text="➕ Nueva Carpeta" onAction="#crearNuevaCarpeta"
-                        style="-fx-padding: 6 12 6 12; -fx-font-size: 11px; -fx-font-weight: bold;" />
-                <Button text="🗑 Eliminar" onAction="#eliminarCarpeta"
-                        style="-fx-padding: 6 12 6 12; -fx-font-size: 11px;" />
+                <Button text="➕ Nueva Carpeta" onAction="#crearNuevaCarpeta" styleClass="bb-btn-primary" />
+                <Button text="🗑 Eliminar" onAction="#eliminarCarpeta" styleClass="bb-btn-danger" />
             </HBox>
         </VBox>
     </left>
@@ -64,19 +52,15 @@
         <VBox spacing="12" style="-fx-padding: 12;">
 
             <!-- Header de carpeta seleccionada y búsqueda -->
-            <HBox spacing="12" alignment="CENTER_LEFT"
-                  style="-fx-background-color: #fafafa; -fx-border-color: #e0e0e0; -fx-border-width: 1; -fx-padding: 10;">
+            <HBox spacing="12" alignment="CENTER_LEFT" styleClass="bb-card">
                 <VBox spacing="2" HBox.hgrow="ALWAYS">
-                    <Label fx:id="lblCarpetaActual" text="📁 Mochila Principal"
-                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #c97e27;" />
-                    <Label fx:id="lblContadorArchivos" text="0 archivos"
-                           style="-fx-font-size: 11px; -fx-text-fill: #888;" />
+                    <Label fx:id="lblCarpetaActual" text="📁 Mochila Principal" styleClass="bb-header-title" />
+                    <Label fx:id="lblContadorArchivos" text="0 archivos" styleClass="bb-header-subtitle" />
                 </VBox>
 
                 <HBox spacing="6" alignment="CENTER_RIGHT">
-                    <Label text="🔍 Buscar:" style="-fx-font-weight: bold; -fx-font-size: 11px;" />
-                    <TextField fx:id="txtBuscar" promptText="Filtrar por nombre..." prefWidth="200"
-                               style="-fx-padding: 6; -fx-font-size: 11;" />
+                    <Label text="🔍 Buscar:" styleClass="bb-field-label" />
+                    <TextField fx:id="txtBuscar" promptText="Filtrar por nombre..." prefWidth="200" />
                 </HBox>
             </HBox>
 
@@ -89,10 +73,9 @@
                 </columns>
                 <placeholder>
                     <VBox alignment="CENTER" spacing="10" style="-fx-padding: 30;">
-                        <Label text="📄 Sin documentos en esta carpeta"
-                               style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #aaa;" />
+                        <Label text="📄 Sin documentos en esta carpeta" styleClass="bb-section-title" />
                         <Label text="Hacé clic en '📥 Subir PDF' para agregar manuales o fichas técnicas."
-                               style="-fx-font-size: 11px; -fx-text-fill: #bbb;" />
+                               styleClass="bb-info-text" />
                     </VBox>
                 </placeholder>
             </TableView>
@@ -100,20 +83,14 @@
         </VBox>
     </center>
 
-    <!-- PIE: Barra de Acciones de Documentos -->
+    <!-- PIE: Barra de Acciones -->
     <bottom>
-        <HBox spacing="10" alignment="CENTER_RIGHT"
-              style="-fx-border-color: #e0e0e0; -fx-border-width: 1 0 0 0; -fx-padding: 12; -fx-background-color: #f8f9fa;">
-            <Button text="🔄 Actualizar" onAction="#actualizarListaArchivos"
-                    style="-fx-padding: 8 16 8 16; -fx-font-size: 11px;" />
-            <Button text="🗑 Eliminar PDF" onAction="#eliminarDocumento"
-                    style="-fx-padding: 8 16 8 16; -fx-font-size: 11px;" />
-            <Button text="➡️ Mover PDF" onAction="#moverDocumento"
-                    style="-fx-padding: 8 16 8 16; -fx-font-size: 11px; -fx-font-weight: bold;" />
-            <Button text="👁 Abrir PDF" onAction="#abrirDocumento"
-                    style="-fx-padding: 8 16 8 16; -fx-font-size: 11px; -fx-font-weight: bold;" />
-            <Button text="📥 Subir PDF" onAction="#subirDocumento"
-                    style="-fx-padding: 8 16 8 16; -fx-font-size: 11px; -fx-font-weight: bold; -fx-background-color: #c97e27; -fx-text-fill: #ffffff; -fx-background-radius: 4;" />
+        <HBox spacing="10" alignment="CENTER_RIGHT" styleClass="bb-footer">
+            <Button text="🔄 Actualizar" onAction="#actualizarListaArchivos" styleClass="bb-btn-secondary" />
+            <Button text="🗑 Eliminar PDF" onAction="#eliminarDocumento" styleClass="bb-btn-danger" />
+            <Button text="➡️ Mover PDF" onAction="#moverDocumento" styleClass="bb-btn-secondary" />
+            <Button text="👁 Abrir PDF" onAction="#abrirDocumento" styleClass="bb-btn-secondary" />
+            <Button text="📥 Subir PDF" onAction="#subirDocumento" styleClass="bb-btn-primary" />
         </HBox>
     </bottom>
 
