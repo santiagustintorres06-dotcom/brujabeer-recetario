@@ -179,9 +179,10 @@
             <Label text="Doble-clic para ver los datos de un lote" styleClass="bb-info-text" />
             <TableView fx:id="tblHistorialLotes" prefHeight="400">
                 <columns>
-                    <TableColumn fx:id="colNroLote" text="Nro Lote" prefWidth="70" />
-                    <TableColumn fx:id="colFecha" text="Fecha" prefWidth="90" />
-                    <TableColumn fx:id="colEficiencia" text="Efic. %" prefWidth="70" />
+                    <TableColumn fx:id="colNroLote" text="Lote" prefWidth="55" />
+                    <TableColumn fx:id="colReceta" text="Receta" prefWidth="105" />
+                    <TableColumn fx:id="colFecha" text="Fecha" prefWidth="85" />
+                    <TableColumn fx:id="colEficiencia" text="Efic. %" prefWidth="60" />
                 </columns>
             </TableView>
         </VBox>

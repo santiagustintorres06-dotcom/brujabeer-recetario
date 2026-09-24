@@ -248,6 +248,27 @@
                         <fx:include source="FermentacionPane.fxml" fx:id="fermentacionPane"/>
                     </Tab>
 
+                    <!-- TAB 6: LOTES DE COCCIÓN -->
+                    <Tab text="📜 Lotes de Cocción" closable="false">
+                        <VBox spacing="10" styleClass="bb-card">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Cocciones elaboradas con esta receta:" styleClass="bb-field-label" />
+                                <Label fx:id="lblTotalLotesReceta" text="0 lote(s)" styleClass="bb-info-text" />
+                            </HBox>
+                            <TableView fx:id="tblLotesDeReceta" prefHeight="180">
+                                <columns>
+                                    <TableColumn fx:id="colRecetaLoteNro" text="Lote #" prefWidth="70" />
+                                    <TableColumn fx:id="colRecetaLoteFecha" text="Fecha" prefWidth="95" />
+                                    <TableColumn fx:id="colRecetaLoteLitros" text="Litros Reales" prefWidth="95" />
+                                    <TableColumn fx:id="colRecetaLoteOg" text="OG Real" prefWidth="75" />
+                                    <TableColumn fx:id="colRecetaLoteAbv" text="ABV Real" prefWidth="75" />
+                                    <TableColumn fx:id="colRecetaLoteEfic" text="Eficiencia" prefWidth="85" />
+                                    <TableColumn fx:id="colRecetaLotePh" text="pH Macerado" prefWidth="95" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </Tab>
+
                 </tabs>
             </TabPane>
 

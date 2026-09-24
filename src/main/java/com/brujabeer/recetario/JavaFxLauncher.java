@@ -31,6 +31,8 @@ import org.springframework.context.ConfigurableApplicationContext;
  * ║  3. stop()  → Al cerrar la app. Aquí cerramos Spring limpiamente.       ║
  * ╚══════════════════════════════════════════════════════════════════════════╝
  */
+import com.brujabeer.recetario.service.PythonServiceManager;
+import com.brujabeer.recetario.ui.component.AiChatWidget;
 import com.brujabeer.recetario.ui.controller.LoteFormController;
 import javafx.scene.image.Image;
 
@@ -90,6 +92,7 @@ public class JavaFxLauncher extends Application {
         tabLotes.setOnSelectionChanged(e -> {
             if (tabLotes.isSelected() && lotesController != null) {
                 lotesController.cargarRecetas();
+                lotesController.cargarHistorialLotes();
             }
         });
 
@@ -107,9 +110,15 @@ public class JavaFxLauncher extends Application {
         mainLayout.getChildren().addAll(tabPane);
         VBox.setVgrow(tabPane, Priority.ALWAYS);
 
+        // ── Iniciar verificación del Asistente Python en segundo plano ──────
+        PythonServiceManager.startAsync();
+
+        // ── Widget Asistente IA (Burbuja flotante en esquina inferior derecha)
+        AiChatWidget chatWidget = new AiChatWidget();
+
         // ── Posicionar botón de tema en la esquina superior derecha ─────────
         StackPane rootStack = new StackPane();
-        rootStack.getChildren().addAll(mainLayout, btnThemeToggle);
+        rootStack.getChildren().addAll(mainLayout, btnThemeToggle, chatWidget.getChatCard(), chatWidget.getFabButton());
         StackPane.setAlignment(btnThemeToggle, Pos.TOP_RIGHT);
         btnThemeToggle.setTranslateX(-15);
         btnThemeToggle.setTranslateY(6);
@@ -191,6 +200,7 @@ public class JavaFxLauncher extends Application {
      */
     @Override
     public void stop() throws Exception {
+        PythonServiceManager.stop();
         springContext.close();
         Platform.exit();
     }

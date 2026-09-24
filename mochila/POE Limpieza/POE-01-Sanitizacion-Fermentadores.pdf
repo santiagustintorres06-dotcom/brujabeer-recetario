@@ -1,0 +1,53 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Length 1004 >>
+stream
+BT
+/F1 12 Tf
+40 750 Td
+18 TL
+(LA BRUJA BEER - PROCEDIMIENTO OPERATIVO ESTANDARIZADO) '
+(DOCUMENTO: POE-01 - Limpieza y Sanitizacion CIP de Fermentadores) '
+(FECHA DE VIGENCIA: 2026 - REVISION: 3.2) '
+() '
+(1. OBJETIVO:) '
+(Asegurar la total eliminacion de restos organicos, piedra de cerveza y microorganismos.) '
+() '
+(2. ETAPAS DEL CICLO CIP:) '
+(Paso 1: Pre-enjuague con agua tibia a 45C durante 10 minutos para remover residuos.) '
+(Paso 2: Lavado caustico: Soda Caustica al 2.5 por ciento a 65C durante 30 minutos continuos.) '
+(Paso 3: Enjuague intermedio con agua limpia hasta que el pH de salida sea neutro [pH 7.0].) '
+(Paso 4: Desinfeccion quimica: Acido Peracetico al 0.2 por ciento a temperatura ambiente.) '
+(        Dejar escurrir sin enjuagar. El acido peracetico no deja residuos contaminantes.) '
+() '
+(3. SEGURIDAD OBLIGATORIA:) '
+(Uso de guantes de nitrilo, antiparras y delantal impermeable.) '
+(Prohibido ingresar al fermentador sin venteo previo de CO2 y medicion de oxigeno.) '
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000000311 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1366
+%%EOF

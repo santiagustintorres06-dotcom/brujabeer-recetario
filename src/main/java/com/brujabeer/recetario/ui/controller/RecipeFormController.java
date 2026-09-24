@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -135,6 +136,17 @@ public class RecipeFormController implements Initializable {
     @FXML private FermentacionPaneController fermentacionPaneController;
     @FXML private Button btnGuardarReceta;
 
+    // ── Componentes de Pestaña Lotes de Cocción de la Receta ────────────────
+    @FXML private TableView<Lote> tblLotesDeReceta;
+    @FXML private TableColumn<Lote, Integer> colRecetaLoteNro;
+    @FXML private TableColumn<Lote, String> colRecetaLoteFecha;
+    @FXML private TableColumn<Lote, String> colRecetaLoteLitros;
+    @FXML private TableColumn<Lote, String> colRecetaLoteOg;
+    @FXML private TableColumn<Lote, String> colRecetaLoteAbv;
+    @FXML private TableColumn<Lote, String> colRecetaLoteEfic;
+    @FXML private TableColumn<Lote, String> colRecetaLotePh;
+    @FXML private Label lblTotalLotesReceta;
+
     // ────────────────────────────────────────────────────────────────────────
     // Modelos de datos observables para los TableView
     // ────────────────────────────────────────────────────────────────────────
@@ -143,6 +155,8 @@ public class RecipeFormController implements Initializable {
     private final ObservableList<RecetaLupulo> lupulosObs = FXCollections.observableArrayList();
     private final ObservableList<RecetaLevadura> levaduraObs = FXCollections.observableArrayList();
     private final ObservableList<RecetaMiscelaneo> miscelaneosObs = FXCollections.observableArrayList();
+    private final ObservableList<Lote> lotesDeRecetaObs = FXCollections.observableArrayList();
+    private Long recetaIdActual = null;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -260,6 +274,46 @@ public class RecipeFormController implements Initializable {
             colMiscelaneoCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
             colMiscelaneoUso.setCellValueFactory(new PropertyValueFactory<>("uso"));
             colMiscelaneoTiempo.setCellValueFactory(new PropertyValueFactory<>("tiempo"));
+        }
+
+        // --- TableView de Lotes de la Receta ---
+        if (tblLotesDeReceta != null) {
+            tblLotesDeReceta.setItems(lotesDeRecetaObs);
+            if (colRecetaLoteNro != null) {
+                colRecetaLoteNro.setCellValueFactory(data ->
+                        new javafx.beans.property.SimpleIntegerProperty(
+                                data.getValue().getNroLote() != null ? data.getValue().getNroLote() : 0).asObject());
+            }
+            if (colRecetaLoteFecha != null) {
+                colRecetaLoteFecha.setCellValueFactory(data ->
+                        new javafx.beans.property.SimpleStringProperty(
+                                data.getValue().getFechaCoccion() != null ? data.getValue().getFechaCoccion().toString() : "—"));
+            }
+            if (colRecetaLoteLitros != null) {
+                colRecetaLoteLitros.setCellValueFactory(data ->
+                        new javafx.beans.property.SimpleStringProperty(
+                                data.getValue().getLitrosFinalesReal() != null ? String.format("%.1f L", data.getValue().getLitrosFinalesReal()) : "—"));
+            }
+            if (colRecetaLoteOg != null) {
+                colRecetaLoteOg.setCellValueFactory(data ->
+                        new javafx.beans.property.SimpleStringProperty(
+                                data.getValue().getDensidadInicialReal() != null ? String.format("%.3f", data.getValue().getDensidadInicialReal()) : "—"));
+            }
+            if (colRecetaLoteAbv != null) {
+                colRecetaLoteAbv.setCellValueFactory(data ->
+                        new javafx.beans.property.SimpleStringProperty(
+                                data.getValue().getAbvReal() != null ? String.format("%.1f %%", data.getValue().getAbvReal()) : "—"));
+            }
+            if (colRecetaLoteEfic != null) {
+                colRecetaLoteEfic.setCellValueFactory(data ->
+                        new javafx.beans.property.SimpleStringProperty(
+                                data.getValue().getEficienciaEquipoReal() != null ? String.format("%.1f %%", data.getValue().getEficienciaEquipoReal()) : "—"));
+            }
+            if (colRecetaLotePh != null) {
+                colRecetaLotePh.setCellValueFactory(data ->
+                        new javafx.beans.property.SimpleStringProperty(
+                                data.getValue().getPhMacerado() != null ? String.format("%.2f", data.getValue().getPhMacerado()) : "—"));
+            }
         }
     }
 
@@ -407,6 +461,7 @@ public class RecipeFormController implements Initializable {
     private void cargarRecetaEnFormulario(Receta recetaSimple) {
         if (recetaSimple == null) return;
 
+        recetaIdActual = recetaSimple.getId();
         Receta receta = recetaSimple;
         if (recetaSimple.getId() != null && recetaService != null) {
             receta = recetaService.buscarConIngredientes(recetaSimple.getId()).orElse(recetaSimple);
@@ -465,6 +520,24 @@ public class RecipeFormController implements Initializable {
                     receta.getVolumenesCO2(),
                     receta.getDiasMaduracion(),
                     receta.getTempMaduracion());
+        }
+
+        // Cargar Lotes asociados a esta receta
+        lotesDeRecetaObs.clear();
+        if (receta.getId() != null && recetaService != null) {
+            try {
+                List<Lote> lotes = recetaService.listarLotesPorReceta(receta);
+                if (lotes != null && !lotes.isEmpty()) {
+                    lotesDeRecetaObs.addAll(lotes);
+                    if (lblTotalLotesReceta != null) {
+                        lblTotalLotesReceta.setText(lotes.size() + " lote(s) registrado(s)");
+                    }
+                } else if (lblTotalLotesReceta != null) {
+                    lblTotalLotesReceta.setText("0 lotes (sin cocciones aún)");
+                }
+            } catch (Exception ex) {
+                log.warn("No se pudieron cargar los lotes de la receta: {}", ex.getMessage());
+            }
         }
 
         recalcularTodo();
@@ -939,6 +1012,9 @@ public class RecipeFormController implements Initializable {
         
         try {
             Receta receta = new Receta();
+            if (recetaIdActual != null) {
+                receta.setId(recetaIdActual);
+            }
             receta.setNombre(txtNombre.getText().trim());
             receta.setEstilo(obtenerEstiloTexto());
             receta.setDescripcion(txaDescripcion.getText());
@@ -1030,7 +1106,16 @@ public class RecipeFormController implements Initializable {
                     "ID: " + saved.getId() + "\n" +
                     "Nombre: " + saved.getNombre() + "\n" +
                     "Estilo: " + saved.getEstilo());
-                lstRecetas.getItems().add(0, saved);
+                if (recetaIdActual != null) {
+                    for (int i = 0; i < lstRecetas.getItems().size(); i++) {
+                        if (lstRecetas.getItems().get(i).getId().equals(saved.getId())) {
+                            lstRecetas.getItems().set(i, saved);
+                            break;
+                        }
+                    }
+                } else {
+                    lstRecetas.getItems().add(0, saved);
+                }
                 limpiarFormulario(null);
             } else {
                 log.warn("RecetaService no está disponible. Guardando en memoria.");
@@ -1048,6 +1133,10 @@ public class RecipeFormController implements Initializable {
 
     @FXML
     public void limpiarFormulario(ActionEvent event) {
+        recetaIdActual = null;
+        if (lstRecetas != null && lstRecetas.getSelectionModel() != null) {
+            lstRecetas.getSelectionModel().clearSelection();
+        }
         txtNombre.clear();
         txaDescripcion.clear();
         txtVolumenLitros.clear();
@@ -1069,6 +1158,8 @@ public class RecipeFormController implements Initializable {
         if (cbAguaPerfil != null) cbAguaPerfil.getSelectionModel().clearSelection();
         if (maceradoTabController != null) maceradoTabController.limpiar();
         if (fermentacionPaneController != null) fermentacionPaneController.limpiar();
+        lotesDeRecetaObs.clear();
+        if (lblTotalLotesReceta != null) lblTotalLotesReceta.setText("0 lote(s)");
     }
 
     @FXML

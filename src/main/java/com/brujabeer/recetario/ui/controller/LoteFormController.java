@@ -64,6 +64,7 @@ public class LoteFormController implements Initializable {
 
     @FXML private TableView<Lote> tblHistorialLotes;
     @FXML private TableColumn<Lote, Integer> colNroLote;
+    @FXML private TableColumn<Lote, String> colReceta;
     @FXML private TableColumn<Lote, String> colFecha;
     @FXML private TableColumn<Lote, Double> colEficiencia;
 
@@ -118,6 +119,13 @@ public class LoteFormController implements Initializable {
                         data.getValue().getNroLote() != null ? data.getValue().getNroLote() : 0
                 ).asObject());
 
+        if (colReceta != null) {
+            colReceta.setCellValueFactory(data ->
+                    new SimpleStringProperty(
+                            data.getValue().getReceta() != null ? data.getValue().getReceta().getNombre() : "—"
+                    ));
+        }
+
         colFecha.setCellValueFactory(data ->
                 new SimpleStringProperty(
                         data.getValue().getFechaCoccion() != null
@@ -157,7 +165,7 @@ public class LoteFormController implements Initializable {
     /**
      * Carga el historial de lotes en la tabla lateral.
      */
-    private void cargarHistorialLotes() {
+    public void cargarHistorialLotes() {
         try {
             if (recetaService != null) {
                 List<Lote> lotes = recetaService.listarLotes();

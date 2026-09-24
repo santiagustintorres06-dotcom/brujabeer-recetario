@@ -1,26 +1,26 @@
-# BrujaBeer V1.2 — Recetario y Sistema de Gestion Cervecera
+# BrujaBeer V2.0 — Recetario, Control de Cocciones y Asistente Técnico IA
 
 ![Java 21](https://img.shields.io/badge/Java-21-orange.svg)
 ![Spring Boot 3.3](https://img.shields.io/badge/Spring_Boot-3.3-green.svg)
 ![JavaFX 21](https://img.shields.io/badge/JavaFX-21-blue.svg)
 ![Database](https://img.shields.io/badge/Database-H2_Embedded-red.svg)
-![Status](https://img.shields.io/badge/Status-Portable_v1.2-gold.svg)
+![IA Assistant](https://img.shields.io/badge/AI_Assistant-FastAPI_ChromaDB_Gemini-purple.svg)
+![Development](https://img.shields.io/badge/Desarrollo-2_meses_en_producción-blueviolet.svg)
+![Status](https://img.shields.io/badge/Status-Version_2.0-gold.svg)
 
-Aplicacion de escritorio portable diseñada para cervecerias artesanales. Integra simulador fisico-quimico, control de lotes de coccion, historial interactivo y gestion documental operativa.
-
----
-
-## Novedades Version 1.2
-
-- **Modo Claro / Modo Oscuro**: Selector de tema integrado en la interfaz con persistencia automatica de preferencias del usuario.
-- **Rediseño Visual**: Sistema de estilos CSS semanticos centralizados, esquinas redondeadas, sombras suaves y tipografia optimizada para lectura prolongada.
-- **Historial Interactivo**: Doble clic sobre cualquier lote del historial para cargar y auditar todos los parametros de la coccion en el formulario.
-- **Control de Elaboracion**: Retroalimentacion inmediata con alertas automaticas de pH y actualizacion de comentarios tecnicos al registrar el lote.
-- **Ejecutable Nativo (`BrujaBeer.exe`)**: Acceso directo para entornos Windows sin ventanas auxiliares de consola (CMD o PowerShell).
+Aplicación de escritorio integral diseñada para cervecerías artesanales, desarrollada a lo largo de **2 meses de trabajo y validación técnica continua**. Integra simulador físico-químico, control de lotes de cocción con trazabilidad completa, repositorio documental operativo y un **Asistente Técnico Cervecero con Inteligencia Artificial** integrado nativamente.
 
 ---
 
-## Modulos del Sistema
+## Novedades Versión 2.0
+
+- **Asistente Técnico Cervecero con IA**: Widget de chat flotante integrado en la interfaz de usuario. Conecta de forma transparente con el microservicio RAG (FastAPI + ChromaDB + Gemini) para responder consultas técnicas sobre recetas, lotes, lupulado, levaduras, manuales de equipos y protocolos de limpieza.
+- **Lanzamiento Silencioso y Desatendido**: El sistema Java detecta y levanta el microservicio de inteligencia artificial en segundo plano sin requerir interacción en consola ni pasos manuales por parte del operario.
+- **Historial de Lotes Vinculado a Recetas**: Visualización del historial de cocciones y rendimientos brewhouse asociados directamente a cada receta.
+- **Modo Claro / Modo Oscuro**: Selector de tema integrado en la interfaz con persistencia automática de preferencias.
+- **Rediseño Visual**: Sistema de estilos CSS semánticos centralizados, sombras suaves y tipografía optimizada para plantas de elaboración.
+- **Historial Interactivo de Cocciones**: Doble clic sobre cualquier lote del historial para auditar y cargar sus parámetros completos de elaboración.
+- **Alertas y Control de pH**: Validación continua de pH de macerado y lavado con recomendaciones técnicas en tiempo real.
 
 ### 1. Recetario y Simulador Cervecero
 - **Calculo de Densidades**: Gravedad inicial (OG) y final (FG) estimadas en tiempo real a partir del grist de granos y la atenuacion de la levadura.
