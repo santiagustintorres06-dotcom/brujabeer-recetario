@@ -5,10 +5,9 @@
 ![JavaFX 21](https://img.shields.io/badge/JavaFX-21-blue.svg)
 ![Database](https://img.shields.io/badge/Database-H2_Embedded-red.svg)
 ![IA Assistant](https://img.shields.io/badge/AI_Assistant-FastAPI_ChromaDB_Gemini-purple.svg)
-![Development](https://img.shields.io/badge/Desarrollo-2_meses_en_producción-blueviolet.svg)
 ![Status](https://img.shields.io/badge/Status-Version_2.0-gold.svg)
 
-Aplicación de escritorio integral diseñada para cervecerías artesanales, desarrollada a lo largo de **2 meses de trabajo y validación técnica continua**. Integra simulador físico-químico, control de lotes de cocción con trazabilidad completa, repositorio documental operativo y un **Asistente Técnico Cervecero con Inteligencia Artificial** integrado nativamente.
+Aplicación de escritorio integral diseñada para cervecerías artesanales. El proyecto se desarrolló en un sprint intensivo, con asistencia de herramientas de IA agéntica para la implementación del asistente RAG. Integra simulador físico-químico, control de lotes de cocción con trazabilidad completa, repositorio documental operativo y un **Asistente Técnico Cervecero con Inteligencia Artificial** integrado nativamente.
 
 ---
 
