@@ -7,7 +7,7 @@
 ![IA Assistant](https://img.shields.io/badge/AI_Assistant-FastAPI_ChromaDB_Gemini-purple.svg)
 ![Status](https://img.shields.io/badge/Status-Version_2.0-gold.svg)
 
-Aplicación de escritorio integral diseñada para cervecerías artesanales. El proyecto se desarrolló en un sprint intensivo, con asistencia de herramientas de IA agéntica para la implementación del asistente RAG. Integra simulador físico-químico, control de lotes de cocción con trazabilidad completa, repositorio documental operativo y un **Asistente Técnico Cervecero con Inteligencia Artificial** integrado nativamente.
+Aplicación de escritorio integral diseñada para cervecería artesanal. El proyecto se desarrolló en un sprint intensivo, con asistencia de herramientas de IA agéntica para la implementación del asistente RAG. Integra simulador físico-químico, control de lotes de cocción con trazabilidad completa, repositorio documental operativo y un **Asistente Técnico Cervecero con Inteligencia Artificial** integrado nativamente.
 
 ---
 
